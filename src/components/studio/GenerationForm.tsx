@@ -1,4 +1,4 @@
-import React, {useState, useMemo} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import Button from '@/components/common/Button';
 import {getUser} from '@/utils/user';
 import DropzoneInput from '@/components/common/DropzoneInput';
@@ -40,10 +40,16 @@ const initialFormState: FormData = {
 };
 
 const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating}) => {
-    const user = getUser();
+    const [isMounted, setIsMounted] = useState(false);
     const [generationMode, setGenerationMode] = useState<'text' | 'image'>('text');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [form, setForm] = useState<FormData>(initialFormState);
+
+    useEffect(() => {
+        setIsMounted(true);
+    }, []);
+
+    const user = getUser();
 
     const requiredTokens = useMemo(() => {
         const baseCost = form.durationSeconds * TOKENS_PER_SECOND_VIDEO;
@@ -152,7 +158,7 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
                            onChange={e => setForm({...form, generateAudio: e.target.checked})}
                            className="sr-only peer"/>
                     <div
-                        className="w-11 h-6 bg-primary-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-accent-500"></div>
+                        className="w-11 h-6 bg-primary-700 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-secondary-400"></div>
                 </label>
             </div>
 
@@ -164,19 +170,31 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
                 >
                     Reset
                 </button>
-                <div className="flex items-center gap-4">
-                    <div className="text-right">
-                        <p className="text-sm text-secondary-400">Token remaining: <span
-                            className="font-semibold">{userToken.toLocaleString()}</span></p>
-                        <p className="text-sm text-white">This generation will cost: <span
-                            className="font-semibold">{requiredTokens}</span></p>
+                <div className="flex items-center gap-4 w-full">
+                    <div className="text-right w-full">
+                        {isMounted ? (
+                            <>
+                                <p className="text-sm font-semibold text-secondary-400">
+                                    Token remaining: {userToken.toLocaleString()}
+                                </p>
+                                <p className="text-sm font-semibold text-white">
+                                    This generation will cost: {requiredTokens}
+                                </p>
+                            </>
+                        ) : (
+                            <>
+                                <p className="text-sm font-semibold text-secondary-400 h-5">Token remaining: ...</p>
+                                <p className="text-sm font-semibold text-white h-5">This generation will cost: ...</p>
+                            </>
+                        )}
                     </div>
                     <Button
-                        label={'Generate'}
-                        icon={<FaPlay className="w-3 h-3"/>}
-                        iconPosition={"right"}
+                        label={isGenerating ? 'Generating...' : 'Generate'}
                         onClick={handleSubmit}
-                        disabled={true}
+                        fullWidth
+                        disabled={!isMounted || !isReadyToSubmit}
+                        icon={<FaPlay className="w-3 h-3"/>}
+                        iconPosition="right"
                     />
                 </div>
             </div>

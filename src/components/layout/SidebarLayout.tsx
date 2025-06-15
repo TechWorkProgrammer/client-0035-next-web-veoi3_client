@@ -66,7 +66,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
                         <Sidebar variant="mobile" toggleOpen={() => setMobileSidebarOpen(false)}/>
                     )}
                 </div>
-                <div className={`transition-all duration-300 flex-1 ${isMinimized ? "lg:ml-20" : "lg:ml-64"}`}>
+                <div className={`transition-all duration-300 flex-1 ${isMinimized ? "lg:ml-20" : "lg:ml-56"}`}>
                     {children}
                 </div>
             </div>

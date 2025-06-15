@@ -49,6 +49,6 @@
       "description": "Discover videos created by the community.",
       "url": "/explore",
       "icons": [{ "src": "/icons.png", "sizes": "96x96" }]
-    },
+    }
   ]
 }

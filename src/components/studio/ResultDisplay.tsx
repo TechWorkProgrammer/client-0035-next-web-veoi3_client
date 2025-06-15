@@ -1,5 +1,6 @@
 import React from 'react';
 import Loader from '@/components/common/Loader';
+import {FaCirclePlay} from "react-icons/fa6";
 
 interface ResultDisplayProps {
     jobStatus: 'idle' | 'processing' | 'completed' | 'failed';
@@ -10,8 +11,10 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({jobStatus, videoResult}) =
     return (
         <div className="bg-primary-900 rounded-lg h-full min-h-[60vh] flex items-center justify-center p-4">
             {jobStatus === 'idle' && (
-                <div className="text-center text-secondary-500">
-                    <p>Your generated video will appear here.</p>
+                <div className="flex flex-col text-center justify-center items-center text-secondary-500">
+                    <FaCirclePlay size={56}/>
+                    <p className="mt-4">Your generated video will appear here.</p>
+                    <p>generate a video to see the preview in this area</p>
                 </div>
             )}
             {jobStatus === 'processing' && (

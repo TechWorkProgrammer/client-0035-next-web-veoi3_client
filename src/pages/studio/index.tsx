@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useRef } from "react";
-import SidebarLayout from "@/components/layout/SidebarLayout";
-import AuthHeader from "@/components/common/AuthHeader";
+import React, {useState, useEffect, useRef} from "react";
 import GenerationForm from "@/components/studio/GenerationForm";
 import ResultDisplay from "@/components/studio/ResultDisplay";
-import { useAlert } from "@/context/Alert";
+import {useAlert} from "@/context/Alert";
 import api from "@/utils/axios";
+import MainLayout from "@/components/layout/MainLayout";
 
 type JobStatus = 'idle' | 'processing' | 'completed' | 'failed';
 
@@ -40,7 +39,7 @@ const StudioPage: React.FC = () => {
         setFinalResult(null);
         try {
             const response = await api.post('/video/generate', formData);
-            const { resultId } = response.data.data;
+            const {resultId} = response.data.data;
             startPolling(resultId);
         } catch (error: any) {
             alert("Error", error.response?.data?.message || "Failed to start generation.", "error");
@@ -58,19 +57,15 @@ const StudioPage: React.FC = () => {
 
 
     return (
-        <SidebarLayout>
-            <div className="rounded-lg flex-1 flex flex-col p-3 md:px-6">
-                <div className="flex flex-row justify-between mb-4 items-center">
-                    <h2 className="text-xl md:text-2xl font-semibold whitespace-nowrap">Studio</h2>
-                    <AuthHeader onConnectClick={() => {}} onProfileClick={() => {}} onPlanClick={() => {}} onPaymentHistoryClick={() => {}} onDisconnect={() => {}} />
-                </div>
+        <MainLayout
+            headerComponent={<h2 className="text-xl md:text-2xl font-semibold whitespace-nowrap">Studio</h2>}
+        >
 
-                <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-                    <GenerationForm onGenerate={handleGenerate} isGenerating={jobStatus === 'processing'}/>
-                    <ResultDisplay jobStatus={jobStatus} videoResult={finalResult} />
-                </div>
+            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
+                <GenerationForm onGenerate={handleGenerate} isGenerating={jobStatus === 'processing'}/>
+                <ResultDisplay jobStatus={jobStatus} videoResult={finalResult}/>
             </div>
-        </SidebarLayout>
+        </MainLayout>
     );
 };
 

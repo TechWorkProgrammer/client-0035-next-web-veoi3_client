@@ -11,7 +11,6 @@ export default function Document() {
             <Head>
                 <meta charSet="UTF-8"/>
                 <meta httpEquiv="X-UA-Compatible" content="IE=edge"/>
-                <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
                 <meta name="description" content={APP_DESCRIPTION}/>
                 <meta name="keywords"
                       content="AI Video Generator, Text to Video, Image to Video, Generative AI, Veo AI, Vertex AI, Web3, Crypto Payment"/>
@@ -46,7 +45,7 @@ export default function Document() {
                 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
                       rel="stylesheet"/>
             </Head>
-            <body className="bg-background-dark text-white antialiased">
+            <body className="bg-black text-white antialiased">
             <Main/>
             <NextScript/>
             </body>

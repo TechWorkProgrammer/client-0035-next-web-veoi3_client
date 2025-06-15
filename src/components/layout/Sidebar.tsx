@@ -27,9 +27,9 @@ const Sidebar: React.FC<SidebarProps> = ({
     ];
     const libraryNav = [
         {label: "Studio", path: "/studio", icon: <Icon name="studio" className="w-5 h-5"/>},
-        /*{label: "Gallery", path: "/gallery", icon: <Icon name="gallery" className="w-5 h-5"/>},
+        {label: "Gallery", path: "/gallery", icon: <Icon name="gallery" className="w-5 h-5"/>},
         {label: "Favorite", path: "/favorite", icon: <Icon name="favorites" className="w-5 h-5"/>},
-        {label: "Trash", path: "/trash", icon: <Icon name="trash" className="w-5 h-5"/>},*/
+        {label: "Trash", path: "/trash", icon: <Icon name="trash" className="w-5 h-5"/>},
     ];
     const allNavGroups = [mainNav, libraryNav];
     const handleNavigation = (path: string) => {
