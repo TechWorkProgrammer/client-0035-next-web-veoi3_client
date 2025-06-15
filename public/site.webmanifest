@@ -1,0 +1,54 @@
+{
+  "name": "VeoI3 - AI Video Generation Studio",
+  "short_name": "VeoI3",
+  "description": "Generate stunning, high-quality videos from simple text or images using cutting-edge generative AI. Integrated with Web3 for a seamless creative economy.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#0a0a0a",
+  "theme_color": "#2B8CFF",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32x32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-16x16.png",
+      "sizes": "16x16",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Create Video",
+      "short_name": "Studio",
+      "description": "Go to the video generation studio.",
+      "url": "/studio",
+      "icons": [{ "src": "/icon.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Explore Videos",
+      "short_name": "Explore",
+      "description": "Discover videos created by the community.",
+      "url": "/explore",
+      "icons": [{ "src": "/icons.png", "sizes": "96x96" }]
+    },
+  ]
+}
