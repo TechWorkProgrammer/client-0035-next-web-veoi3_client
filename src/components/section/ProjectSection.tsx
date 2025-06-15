@@ -47,7 +47,7 @@ const ProjectSection = () => {
             </div>
 
 
-            <div className="relative w-full flex justify-center items-center w-full h-auto z-10">
+            <div className="relative w-full flex justify-center items-center h-auto z-10">
                 <motion.div
                     className="relative w-full transform rotate-3 scale-105 border-accent-500"
                     initial={{opacity: 0, scale: 0.9}}
