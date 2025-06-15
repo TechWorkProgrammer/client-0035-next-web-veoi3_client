@@ -16,7 +16,7 @@ const FavoritesPage: React.FC = () => {
 
     return (
         <MainLayout
-            headerComponent={<FavoriteHeader onSearch={handleSearch} placeholder="Search in favorites..."/>}
+            headerComponent={<FavoriteHeader onSearch={handleSearch}/>}
         >
             <div className="w-full">
                 {hasFavorites ? (

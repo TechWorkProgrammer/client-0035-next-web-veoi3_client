@@ -36,7 +36,7 @@ const ProjectSection = () => {
             </motion.h5>
 
             <button
-                onClick={() => router.push("/project")}
+                onClick={() => router.push("/studio")}
                 className="rounded-full bg-white text-black py-1.5 px-5 font-semibold text-sm md:text-md lg:text-lg"
             >
                 Start your first project
