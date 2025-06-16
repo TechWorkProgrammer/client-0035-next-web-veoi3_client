@@ -142,14 +142,6 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
                        className="w-full h-2 bg-primary-700 rounded-lg appearance-none cursor-pointer"/>
             </div>
 
-            <div>
-                <label htmlFor="sampleCount" className="block text-sm font-medium text-secondary-400 mb-2">Number of
-                    Videos ({form.sampleCount})</label>
-                <input type="range" id="sampleCount" min="1" max="4" step="1" value={form.sampleCount}
-                       onChange={e => setForm({...form, sampleCount: Number(e.target.value)})}
-                       className="w-full h-2 bg-primary-700 rounded-lg appearance-none cursor-pointer"/>
-            </div>
-
             <div className="flex items-center justify-between">
                 <label htmlFor="generateAudio" className="text-sm font-medium text-secondary-400">Generate Audio
                     (+{TOKENS_PER_SECOND_AUDIO} tokens/sec)</label>

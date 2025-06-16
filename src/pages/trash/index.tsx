@@ -14,7 +14,7 @@ const TrashPage: React.FC = () => {
                     <div></div>
                 ) : (
                     <div
-                        className="flex flex-col items-center justify-center text-center p-12 bg-primary-900 border-2 border-dashed border-primary-700 rounded-2xl min-h-[50vh]">
+                        className="flex flex-col items-center justify-center text-center p-12 rounded-2xl min-h-[50vh]">
                         <div className="bg-primary-800 p-4 rounded-full mb-6">
                             <FiTrash2 className="w-10 h-10 text-accent-400"/>
                         </div>

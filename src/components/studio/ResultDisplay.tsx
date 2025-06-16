@@ -22,6 +22,7 @@ const ResultDisplay: React.FC<ResultDisplayProps> = ({jobStatus, videoResult}) =
                     <Loader/>
                     <p className="mt-4 text-white">Generating your video...</p>
                     <p className="text-sm text-secondary-400">This may take a few minutes. You can leave this page.</p>
+                    <p className="text-sm text-secondary-400">We will notify you when it’s ready.</p>
                 </div>
             )}
             {jobStatus === 'failed' && (

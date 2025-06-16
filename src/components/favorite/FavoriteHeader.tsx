@@ -19,7 +19,7 @@ const FavoriteHeader: React.FC<SimpleHeaderProps> = ({onSearch}) => {
     }, [searchTerm, onSearch]);
 
     return (
-        <div className="flex items-center justify-between w-full gap-4">
+        <div className="flex items-center justify-between w-fill gap-8">
             <h2 className="text-xl md:text-2xl font-semibold whitespace-nowrap">Favorite</h2>
             <div className="relative w-24 md:w-36 lg:w-48">
                 <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-200"/>
