@@ -48,20 +48,20 @@ const HowItWorksSection: React.FC = () => {
                 Follow these simple steps to generate videos with synchronized audio using Veoi3.
             </motion.h5>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 grid-rows-2 gap-6 mt-16 max-w-7xl w-full">
+            <div className="grid grid-cols-3 grid-rows-2 gap-2 md:gap-6 mt-16 max-w-7xl w-full">
                 {steps.map((step, idx) => (
                     <motion.div
                         key={idx}
                         className={`bg-background-dark p-6 rounded-xl shadow-md flex flex-col justify-between gap-8 ${step.className}`}
                         initial={{opacity: 0, y: 20}}
                         whileInView={{opacity: 1, y: 0}}
-                        viewport={{once: true}}
+                        viewport={{once: false}}
                         transition={{duration: 0.5, delay: idx * 0.2}}
                     >
-                        <h3 className="text-md font-semibold text-white mb-2 tracking-widest uppercase">
+                        <h3 className="text-xs md:text-md font-semibold text-white mb-2 tracking-widest uppercase">
                             {step.title}
                         </h3>
-                        <p className="text-md font-semibold text-white">{step.description}</p>
+                        <p className="text-xs md:text-md font-semibold text-white">{step.description}</p>
                     </motion.div>
                 ))}
             </div>

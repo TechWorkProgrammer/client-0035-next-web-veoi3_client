@@ -73,7 +73,7 @@ const FeatureSection: React.FC = () => {
                 Veoi3 combines cutting-edge AI tech to deliver video and audio generation in one seamless tool.
             </motion.p>
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-10 mt-16 w-full max-w-7xl items-center">
+            <div className="grid grid-cols-3 gap-10 mt-16 w-full max-w-7xl items-center">
                 <div className="space-y-14">
                     {featuresLeft.map((feature, idx) => (
                         <motion.div

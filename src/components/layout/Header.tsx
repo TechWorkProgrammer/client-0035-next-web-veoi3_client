@@ -27,6 +27,7 @@ const Header: React.FC = () => {
         {label: "Features", path: "#features"},
         {label: "How it works", path: "#how-it-works"},
         {label: "Pricing", path: "#pricing"},
+        {label: "Documentation", path: "#"},
     ];
 
     const handleNavigation = (path: string) => {
@@ -45,7 +46,7 @@ const Header: React.FC = () => {
     return (
         <>
             <header
-                className={`fixed top-0 left-0 w-full z-40 transition-all duration-300 ${headerBg}`}
+                className={`fixed top-0 left-0 w-screen z-40 transition-all duration-300 ${headerBg}`}
             >
                 <nav className="px-4 lg:px-10 py-3">
                     <div className="flex justify-between items-center max-w-screen-2xl mx-auto relative">
@@ -65,11 +66,11 @@ const Header: React.FC = () => {
                                     />
                                 </div>
                                 <span className="text-white font-semibold text-xl md:text-2xl">
-                                VeoI3
+                                Veoi3
                             </span>
                             </button>
 
-                            <ul className="flex space-x-2 md:space-x-6">
+                            <ul className="space-x-2 md:space-x-6 hidden md:block md:flex">
                                 {navItems.map((item) => (
                                     <li key={item.label}>
                                         {item.path.startsWith("http") ? (
@@ -77,14 +78,14 @@ const Header: React.FC = () => {
                                                 href={item.path}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                className="text-white/70 font-semibold text-sm hover:text-accent-500 transition-colors"
+                                                className="text-white/70 font-semibold text-sm md:text-lg hover:text-accent-500 transition-colors"
                                             >
                                                 {item.label}
                                             </a>
                                         ) : (
                                             <Link
                                                 href={item.path}
-                                                className="text-white/70 font-semibold text-sm md:text-md lg:text-lg hover:text-accent-500 transition-colors"
+                                                className="text-white/70 font-semibold text-sm md:text-lg hover:text-accent-500 transition-colors"
                                                 onClick={() => handleNavigation(item.path)}
                                             >
                                                 {item.label}

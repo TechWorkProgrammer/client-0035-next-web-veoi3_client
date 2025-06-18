@@ -10,7 +10,7 @@ const ProjectSection = () => {
     return (
         <motion.section
             id="project"
-            className="relative flex flex-col items-center justify-start min-h-screen text-white py-16 bg-transparent overflow-visible"
+            className="relative flex flex-col items-center justify-start text-white py-16 bg-transparent overflow-visible"
             initial={{opacity: 0}}
             whileInView={{opacity: 1}}
             viewport={{once: false}}
@@ -19,17 +19,17 @@ const ProjectSection = () => {
             <div className="absolute inset-0 z-0"></div>
 
             <motion.h5
-                className="text-xl font-bold text-secondary-600 text-center z-10 tracking-widest"
+                className="text-lg md:text-xl font-bold text-secondary-600 text-center z-10 tracking-widest"
             >
                 UNLEASH YOUR CREATIVE VISION
             </motion.h5>
             <motion.h1
-                className="text-4xl md:text-5xl font-bold my-4 text-white text-center z-10"
+                className="text-3xl md:text-4xl lg:text-5xl font-bold my-4 text-white text-center z-10 max-w-3xl"
             >
                 Experience a New Era of Video Creation with Veoi3.
             </motion.h1>
             <motion.h5
-                className="text-xl font-bold mb-12 text-secondary-600 text-center z-10"
+                className="text-md md:text-lg font-bold mb-12 text-secondary-600 text-center z-10"
             >
                 The cutting-edge generative AI video that produces integrated visuals and audio, straight from your
                 imagination.

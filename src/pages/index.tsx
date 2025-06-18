@@ -9,9 +9,9 @@ import FeatureSection from "@/components/section/FutureSection";
 
 const Home: React.FC = () => {
     return (
-        <>
+        <div className="overflow-hidden w-screen">
             <Header/>
-            <main className="flex-grow subpixel-antialiased mb-24">
+            <main className="flex-grow subpixel-antialiased w-screen">
                 <Banner/>
                 <FeatureSection/>
                 <HowItWorksSection/>
@@ -19,7 +19,7 @@ const Home: React.FC = () => {
                 <ProjectSection/>
             </main>
             <Footer/>
-        </>
+        </div>
     );
 };
 

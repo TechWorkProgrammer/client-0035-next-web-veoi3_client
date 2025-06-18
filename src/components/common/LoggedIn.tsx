@@ -196,7 +196,7 @@ const LoggedInComponent: React.FC<LoggedInComponentProps> = ({
                             </div>
                         </div>
                         <div>
-                            <p className="text-sm text-white">VeoI3 coins</p>
+                            <p className="text-sm text-white">Total $veoi3 coins</p>
                             <p className="text-md font-bold text-white mt-1">{user?.user.point || 0} <span
                                 className="text-sm ml-1">Coin</span></p>
                         </div>
