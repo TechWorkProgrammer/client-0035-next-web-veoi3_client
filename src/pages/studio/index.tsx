@@ -4,6 +4,7 @@ import ResultDisplay from "@/components/studio/ResultDisplay";
 import {useAlert} from "@/context/Alert";
 import api from "@/utils/axios";
 import MainLayout from "@/components/layout/MainLayout";
+import {useWallet} from "@/context/Wallet";
 
 type JobStatus = 'idle' | 'processing' | 'completed' | 'failed';
 
@@ -15,6 +16,7 @@ const StudioPage: React.FC = () => {
     const [pollRetries, setPollRetries] = useState<number>(0);
     const pollingIntervalRef = useRef<NodeJS.Timeout | null>(null);
     const alert = useAlert();
+    const {refreshUser} = useWallet();
 
     const startPolling = (resultId: string) => {
         if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
@@ -29,6 +31,7 @@ const StudioPage: React.FC = () => {
                     if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
                     setJobStatus(result.status.toLowerCase());
                     setFinalResult(result);
+                    refreshUser().then();
                 }
             } catch (error: any) {
                 console.warn(`Polling attempt ${pollRetries + 1} failed. Retrying...`, error);
@@ -39,7 +42,7 @@ const StudioPage: React.FC = () => {
                     if (pollingIntervalRef.current) clearInterval(pollingIntervalRef.current);
                     setJobStatus('failed');
                     const errorMessage = error.response?.data?.message || "Could not retrieve generation status after multiple attempts.";
-                    setFinalResult({ errorMessage });
+                    setFinalResult({errorMessage});
                 }
             }
         }, 10000);

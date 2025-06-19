@@ -53,7 +53,7 @@ const Banner: React.FC = () => {
                 <div
                     className="relative w-[90vw] md:w-[95vw] aspect-[20/9] rounded overflow-hidden shadow-lg mx-auto">
                     <Image
-                        src="/assets/gif/veoi3-head.gif"
+                        src="/assets/images/banner.png"
                         alt="Generated Example"
                         fill
                         style={{objectFit: "cover", objectPosition: "top"}}

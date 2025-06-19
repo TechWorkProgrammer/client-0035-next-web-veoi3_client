@@ -3,11 +3,12 @@ import {FaPlus, FaSyncAlt} from "react-icons/fa";
 import {format} from 'date-fns';
 import Image from "next/image";
 import api from "@/utils/axios";
-import {saveUser, getUser, getAccessToken, clearUser, updateUsername} from "@/utils/user";
+import {getUser, getAccessToken, clearUser, updateUsername} from "@/utils/user";
 import {FiEdit} from "react-icons/fi";
 import {PiCopySimpleBold} from "react-icons/pi";
 import Button from "@/components/common/Button";
 import ModalPlan from "@/components/payment/ModalPlan";
+import {useWallet} from "@/context/Wallet";
 
 interface LoggedInComponentProps {
     user: ReturnType<typeof getUser>;
@@ -33,35 +34,7 @@ const LoggedInComponent: React.FC<LoggedInComponentProps> = ({
     const isUsernameChanged = user?.user.username !== username;
 
     const walletIconSrc = walletIconMap[user?.walletType || ""] || "/assets/wallets/default.png";
-
-    const refreshUserData = async () => {
-        loader(true);
-        try {
-            const token = getAccessToken();
-            if (!token) {
-                alert(
-                    "Authentication Required",
-                    "No valid session found. Please connect your wallet again.",
-                    "error"
-                );
-                clearUser();
-                return;
-            }
-            const response = await api.get(`/user/me`);
-            const updated = response.data.data;
-            saveUser({
-                user: updated,
-                accessToken: user?.accessToken || "",
-                refreshToken: user?.refreshToken || "",
-                walletType: user?.walletType || "unknown",
-            });
-            alert("Data Refreshed", "Your account information has been updated.", "success");
-        } catch (err: any) {
-            alert("Refresh Failed", err.message || "Unable to update user data.", "error");
-        } finally {
-            loader(false);
-        }
-    };
+    const { refreshUser } = useWallet();
 
     const handleUpdateUsername = async () => {
         if (!username || username.length < 4 || username.length > 20) {
@@ -209,7 +182,7 @@ const LoggedInComponent: React.FC<LoggedInComponentProps> = ({
 
                     <div className="w-full flex items-center justify-end gap-4">
                         <button
-                            onClick={refreshUserData}
+                            onClick={refreshUser}
                             className="flex items-center justify-center gap-2 bg-primary-700 text-white px-4 py-2 rounded-full transition hover:bg-primary-600"
                         >
                             <FaSyncAlt/>

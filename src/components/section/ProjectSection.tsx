@@ -37,7 +37,7 @@ const ProjectSection = () => {
 
             <button
                 onClick={() => router.push("/studio")}
-                className="rounded-full bg-white text-black py-1.5 px-5 font-semibold text-sm md:text-md lg:text-lg"
+                className="rounded-full bg-white text-black py-1.5 px-5 font-semibold text-sm md:text-md lg:text-lg z-10"
             >
                 Start your first project
             </button>

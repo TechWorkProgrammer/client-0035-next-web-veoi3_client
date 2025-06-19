@@ -11,7 +11,7 @@ const Footer: React.FC = () => {
                 <div className="flex flex-col justify-between items-center gap-4">
                     <div className="text-center flex flex-col gap-3">
                         <h1 className="text-5xl text-white">
-                            VeoI3
+                            Veoi3
                         </h1>
                         <p className="text-lg text-secondary-500">
                             Get everything you need to make creative videos quickly and effortlessly
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
                 <div
                     className="my-6 border-t border-secondary-700 py-4 md:pt-12 text-center flex flex-row justify-center gap-3">
                     <p className="text-md text-secondary-500">
-                        © 2025 VeoI3.
+                        © 2025 Veoi3.
                     </p>
                     <p
                         className="text-md text-secondary-500 cursor-pointer hover:underline"

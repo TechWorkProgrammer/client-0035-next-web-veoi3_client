@@ -6,7 +6,7 @@ import React, {
     ReactNode,
 } from "react";
 import {connectWallet as connectChain, disconnectWallet as disconnectChain} from "@/utils/wallet";
-import {saveUser, clearUser, getUser} from "@/utils/user";
+import {saveUser, clearUser, getUser, getAccessToken} from "@/utils/user";
 import {useAlert} from "@/context/Alert";
 import {useLoader} from "@/context/Loader";
 import {BrowserProvider} from "ethers";
@@ -24,6 +24,7 @@ interface WalletContextType {
         isRegister?: boolean
     ) => Promise<void>;
     disconnectWallet: () => void;
+    refreshUser: () => Promise<void>;
 }
 
 const WalletContext = createContext<WalletContextType | undefined>(undefined);
@@ -59,6 +60,47 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({children}) =>
 
         return () => clearInterval(interval);
     }, [connectedWallet, walletAddress]);
+
+    const refreshUser = async () => {
+        loader(true);
+        try {
+            const token = getAccessToken();
+            if (!token) {
+                alert(
+                    "Authentication Required",
+                    "No valid session found. Please reconnect your wallet.",
+                    "error"
+                );
+                clearUser();
+                setConnectedWallet(null);
+                setWalletAddress(null);
+                return;
+            }
+            const res = await api.get(`/user/me`);
+            const updated = res.data.data;
+            saveUser({
+                user: updated,
+                accessToken: token,
+                refreshToken: getUser()?.refreshToken || "",
+                walletType: connectedWallet || "unknown",
+            });
+            setConnectedWallet(getUser()!.walletType);
+            setWalletAddress(updated.address);
+            alert(
+                "Data Refreshed",
+                "Your account information has been updated.",
+                "success"
+            );
+        } catch (err: any) {
+            alert(
+                "Refresh Failed",
+                err?.message || "Unable to update user data.",
+                "error"
+            );
+        } finally {
+            loader(false);
+        }
+    };
 
     const connectWallet = async (
         walletName: string,
@@ -124,30 +166,28 @@ export const WalletProvider: React.FC<{ children: ReactNode }> = ({children}) =>
         }
     };
 
-    const handleConfirmLogout = async () => {
-        setIsLogoutModalOpen(false);
-        loader(true, {size: "large"});
-        await disconnectChain();
-        clearUser();
-        setConnectedWallet(null);
-        setWalletAddress(null);
-        loader(false);
-        alert("Disconnected", "You have been successfully logged out.", "info");
-    };
-
     const disconnectWallet = () => {
         setIsLogoutModalOpen(true);
     };
 
     return (
         <WalletContext.Provider
-            value={{connectedWallet, walletAddress, isConnecting, connectWallet, disconnectWallet}}
+            value={{connectedWallet, walletAddress, isConnecting, connectWallet, disconnectWallet, refreshUser}}
         >
             {children}
             <LogoutConfirmationModal
                 isOpen={isLogoutModalOpen}
                 onClose={() => setIsLogoutModalOpen(false)}
-                onConfirm={handleConfirmLogout}
+                onConfirm={async () => {
+                    setIsLogoutModalOpen(false);
+                    loader(true, {size: "large"});
+                    await disconnectChain();
+                    clearUser();
+                    setConnectedWallet(null);
+                    setWalletAddress(null);
+                    loader(false);
+                    alert("Disconnected", "You have been successfully logged out.", "info");
+                }}
             />
         </WalletContext.Provider>
     );

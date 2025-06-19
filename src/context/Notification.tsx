@@ -4,6 +4,7 @@ import {getUser} from '@/utils/user';
 import {INotification} from '@/types/notification';
 import api from "@/utils/axios";
 import {useAlert} from "@/context/Alert";
+import {useWallet} from "@/context/Wallet";
 
 interface INotificationData {
     notifications: INotification[];
@@ -14,8 +15,11 @@ interface INotificationData {
 interface NotificationContextType {
     notifications: INotification[];
     unreadCount: number;
+    isLoadingMore: boolean;
+    pagination: INotificationData["pagination"] | null;
     markAsRead: (notificationId: string) => Promise<void>;
     deleteNotification: (notificationId: string) => Promise<void>;
+    loadMoreNotifications: () => Promise<void>;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(undefined);
@@ -23,8 +27,11 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 export const NotificationProvider: React.FC<{ children: ReactNode }> = ({children}) => {
     const [notifications, setNotifications] = useState<INotification[]>([]);
     const [unreadCount, setUnreadCount] = useState(0);
+    const [pagination, setPagination] = useState<NotificationContextType["pagination"]>(null);
+    const [isLoadingMore, setIsLoadingMore] = useState(false);
     const user = getUser();
     const alert = useAlert();
+    const {refreshUser} = useWallet();
 
     useEffect(() => {
         if (user?.user.id) {
@@ -37,11 +44,13 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({childre
             newSocket.on('initial_notifications', (data: INotificationData) => {
                 setNotifications(data.notifications);
                 setUnreadCount(data.unreadCount);
+                setPagination(data.pagination);
             });
 
             newSocket.on('new_notification', (newNotification: INotification) => {
                 setNotifications(prev => [newNotification, ...prev]);
                 setUnreadCount(prev => prev + 1);
+                refreshUser().then();
                 alert("New Notification", newNotification.title, "info");
             });
 
@@ -49,7 +58,33 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({childre
                 newSocket.disconnect();
             };
         }
-    }, [alert, user?.user.id]);
+    }, [alert, refreshUser, user?.user.id]);
+
+    const loadMoreNotifications = useCallback(async () => {
+        if (
+            !pagination ||
+            isLoadingMore ||
+            pagination.currentPage >= pagination.totalPages
+        ) {
+            return;
+        }
+
+        setIsLoadingMore(true);
+        try {
+            const nextPage = pagination.currentPage + 1;
+            const res = await api.get<{ data: INotificationData }>('/notification', {
+                params: {page: nextPage, limit: pagination.limit}
+            });
+            const data = res.data.data;
+
+            setNotifications(prev => [...prev, ...data.notifications]);
+            setPagination(data.pagination);
+        } catch (error: any) {
+            alert("Error", "Failed to load more notifications: " + error.message, "error");
+        } finally {
+            setIsLoadingMore(false);
+        }
+    }, [pagination, isLoadingMore, alert]);
 
     const markAsRead = useCallback(async (notificationId: string) => {
         const originalNotifications = [...notifications];
@@ -93,10 +128,16 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({childre
         }
     }, [alert, notifications]);
 
-    const value = {notifications, unreadCount, markAsRead, deleteNotification};
-
     return (
-        <NotificationContext.Provider value={value}>
+        <NotificationContext.Provider value={{
+            notifications,
+            unreadCount,
+            pagination,
+            isLoadingMore,
+            markAsRead,
+            deleteNotification,
+            loadMoreNotifications
+        }}>
             {children}
         </NotificationContext.Provider>
     );
