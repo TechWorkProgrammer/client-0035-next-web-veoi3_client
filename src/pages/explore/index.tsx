@@ -74,7 +74,7 @@ const ExplorePage: React.FC = () => {
         <MainLayout
             headerComponent={<ExploreHeader onFilterChange={handleFilterChange} onSearch={handleSearch} />}
         >
-            <div className="w-full" style={{ columnCount: 3, columnGap: '1rem' }}>
+            <div className="w-full columns-1 md:columns-2 lg:columns-3 gap-x-4 gap-y-4">
                 {videos.map((video, index) => (
                     <ExploreVideoCard key={`${video.id}-${index}`} video={video} />
                 ))}

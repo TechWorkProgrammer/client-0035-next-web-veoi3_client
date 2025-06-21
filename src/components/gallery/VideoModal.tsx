@@ -134,7 +134,7 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
                     </a>
                 </div>
 
-                <div className="relative w-full h-full flex items-center justify-center max-w-3xl">
+                <div className="relative w-full h-full flex items-center justify-center max-w-4xl max-h-[70vh]">
                     {videoUrl ? (
                         <video
                             ref={videoRef}
@@ -152,7 +152,7 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
                     )}
                 </div>
 
-                <div className="px-6 flex flex-col items-center max-w-5xl mx-auto">
+                <div className="md:px-6 flex flex-col items-center max-w-7xl mx-auto">
                     <input
                         type="range"
                         min={0}
@@ -175,8 +175,8 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
                         <span>{formatTime(currentTime)} / {formatTime(duration)}</span>
                     </div>
                     <div
-                        className="relative bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 text-center">
-                        <p className="text-white text-sm mx-auto max-w-5xl">{video.prompt}</p>
+                        className="relative bg-gradient-to-t from-black/80 to-transparent p-4 text-center">
+                        <p className="text-white text-xs md:text-sm mx-auto max-w-7xl">{video.prompt}</p>
                     </div>
                 </div>
             </div>

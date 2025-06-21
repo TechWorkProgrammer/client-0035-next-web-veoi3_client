@@ -27,7 +27,7 @@ const Header: React.FC = () => {
         {label: "Features", path: "#features"},
         {label: "How it works", path: "#how-it-works"},
         {label: "Pricing", path: "#pricing"},
-        {label: "Documentation", path: "#"},
+        {label: "Documentation", path: "https://docs.veoi3.app/"},
     ];
 
     const handleNavigation = (path: string) => {

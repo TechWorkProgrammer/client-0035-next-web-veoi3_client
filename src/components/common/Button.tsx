@@ -25,7 +25,7 @@ const Button: React.FC<Props> = ({
                                      disabled = false,
                                  }) => {
     const baseStyles =
-        "relative font-semibold flex items-center justify-center gap-2 rounded-full text-md md:text-lg py-2 px-4 transition-transform duration-300 shadow-md focus:outline-none overflow-hidden";
+        "relative font-semibold flex items-center justify-center gap-2 rounded-full text-sm md:text-md lg:text-lg py-2 px-4 transition-transform duration-300 shadow-md focus:outline-none overflow-hidden";
 
     const primaryStyles = `bg-white text-black`;
 

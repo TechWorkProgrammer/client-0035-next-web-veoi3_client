@@ -71,16 +71,16 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
     }
 
     return (
-        <div className="flex flex-row items-center gap-4 font-semibold text-md">
-            <div className="flex items-center justify-center gap-3">
-                <p className="text-lg font-bold text-white">{user.user.token || 0} <span
-                    className="text-md ml-1">Token</span></p>
+        <div className="flex flex-row items-center gap-1 md:gap-4 font-semibold text-md">
+            <div className="flex items-center justify-center gap-2 md:gap-3">
+                <p className="text-sm md:text-lg font-bold text-white">{user.user.token || 0} <span
+                    className="text-sm md:text-md ml-1">Token</span></p>
                 <button
                     onClick={onPlanClick}
-                    className="bg-white text-background-dark rounded-full w-5 h-5 flex items-center justify-center transition hover:bg-accent-500/40"
+                    className="bg-white text-background-dark rounded-full w-3 h-3 md:w-5 md:h-5 flex items-center justify-center transition hover:bg-accent-500/40"
                     aria-label="Add Tokens"
                 >
-                    <FaPlus className="w-3 h-3"/>
+                    <FaPlus className="w-2 h-2 md:w-3 md:h-3"/>
                 </button>
             </div>
             <div className="relative" ref={notificationDropdownRef}>
@@ -88,7 +88,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
                     onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
                     className="flex items-center justify-center p-2 transition hover:bg-accent-500/10 text-white rounded-full"
                 >
-                    <Icon name="notification" className="w-6 h-6"/>
+                    <Icon name="notification" className="w-4 h-4 md:w-6 md:h-6"/>
                     {unreadCount > 0 && (
                         <span
                             className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-primary-800">
@@ -105,14 +105,14 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
             <div className="relative" ref={profileDropdownRef}>
                 <button
                     onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                    className="flex items-center justify-center transition rounded-full hover:ring-2 hover:ring-secondary-400"
+                    className="flex items-center justify-center transition rounded-full"
                 >
                     <Image
                         src={user.user.profileImage || `https://ui-avatars.com/api/?name=${user.user.username}&background=random`}
                         alt={user.user.username}
                         width={40}
                         height={40}
-                        className="w-8 h-8 rounded-full object-cover"
+                        className="w-4 h-4 md:w-8 md:h-8 rounded-full object-cover"
                     />
                 </button>
 

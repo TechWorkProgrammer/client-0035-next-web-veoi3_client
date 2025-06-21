@@ -22,8 +22,8 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     const mainNav = [
         {label: "Explore", path: "/explore", icon: <Icon name="explore" className="w-4 h-4"/>},
-        /*{label: "Top", path: "/explore/top", icon: <Icon name="medal" className="w-5 h-5"/>},
-        {label: "Likes", path: "/explore/likes", icon: <Icon name="likes" className="w-5 h-5"/>},*/
+        {label: "Top", path: "/explore/top", icon: <Icon name="medal" className="w-5 h-5"/>},
+        {label: "Likes", path: "/explore/likes", icon: <Icon name="likes" className="w-5 h-5"/>},
     ];
     const libraryNav = [
         {label: "Studio", path: "/studio", icon: <Icon name="studio" className="w-5 h-5"/>},
@@ -63,7 +63,7 @@ const Sidebar: React.FC<SidebarProps> = ({
                             priority
                         />
                     </div>
-                    <p className="ml-2 text-white font-semibold text-xl">VeoI3</p>
+                    <p className="ml-2 text-white font-semibold text-xl">Veoi3</p>
                 </div>
                 <div className="flex-1 overflow-y-auto mt-2">
                     {allNavGroups.map((group, groupIdx) => (

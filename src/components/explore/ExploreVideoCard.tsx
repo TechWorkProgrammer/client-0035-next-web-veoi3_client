@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import Image from 'next/image';
-import {FaPlay, FaHeart} from 'react-icons/fa';
+import {FaPlay} from 'react-icons/fa';
 import VideoModal from '@/components/gallery/VideoModal';
 
 export interface ExploreVideo {
@@ -32,7 +32,7 @@ const ExploreVideoCard: React.FC<ExploreVideoCardProps> = ({video}) => {
     return (
         <>
             <div
-                className="relative bg-black rounded-lg overflow-hidden group cursor-pointer shadow-lg w-full mb-4 break-inside-avoid"
+                className="relative bg-black rounded overflow-hidden group cursor-pointer shadow-lg break-inside-avoid mb-4"
                 onClick={openModal}
             >
                 <div className="w-full h-auto">
@@ -61,11 +61,6 @@ const ExploreVideoCard: React.FC<ExploreVideoCardProps> = ({video}) => {
                 <div
                     className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <FaPlay className="text-white text-4xl"/>
-                </div>
-                <div
-                    className="absolute top-2 right-2 flex items-center gap-1.5 bg-black/50 text-white text-xs px-2 py-1 rounded-full">
-                    <FaHeart className="w-3 h-3 text-accent-400"/>
-                    <span>{video._count.favorites}</span>
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
                     <p className="text-white text-sm font-semibold truncate" title={video.prompt}>

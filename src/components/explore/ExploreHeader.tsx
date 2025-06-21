@@ -51,15 +51,15 @@ const ExploreHeader: React.FC<ExploreHeaderProps> = ({onFilterChange, onSearch})
     };
 
     return (
-        <div className="flex items-center justify-between w-fill gap-8">
-            <div className="flex items-center justify-between gap-4 md:gap-8">
-                <h2 className="text-xl md:text-2xl font-semibold whitespace-nowrap">{filterTitles[activeFilter]}</h2>
+        <div className="flex items-center justify-between w-fill gap-2 md:gap-8">
+            <div className="flex items-center justify-between gap-2 md:gap-8">
+                <h2 className="text-md md:text-2xl font-semibold whitespace-nowrap">{filterTitles[activeFilter]}</h2>
                 <div className="relative" ref={filterRef}>
                     <button
                         onClick={() => setIsFilterOpen(!isFilterOpen)}
-                        className="w-9 h-9 flex items-center justify-center bg-primary-700 rounded-full transition hover:bg-primary-600"
+                        className="w-5 h-5 md:w-9 md:h-9 flex items-center justify-center bg-primary-700 rounded-full transition hover:bg-primary-600"
                     >
-                        <Icon className="w-5 h-5" name="filter"/>
+                        <Icon className="h-3 w-3 md:w-5 md:h-5" name="filter"/>
                     </button>
                     {isFilterOpen && (
                         <div
@@ -87,7 +87,7 @@ const ExploreHeader: React.FC<ExploreHeaderProps> = ({onFilterChange, onSearch})
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     onKeyDown={handleSearch}
-                    className="w-full bg-primary-900 border-2 border-primary-700 rounded-lg focus:border-accent-500 focus:outline-none pl-10 pr-4 py-2 transition text-white placeholder-secondary-400"
+                    className="w-full bg-transparent border-b-2 border-primary-700 focus:border-accent-500 focus:outline-none pl-10 py-1 md:pr-4 md:py-2 transition text-white placeholder-secondary-400 text-sm md:text-md"
                 />
             </div>
         </div>
