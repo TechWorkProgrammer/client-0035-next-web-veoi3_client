@@ -18,11 +18,11 @@ const Footer: React.FC = () => {
                         </p>
                     </div>
                     <div className="flex gap-4 my-6">
-                        <a href="https://t.me/" target="_blank" rel="noopener noreferrer"
+                        <a href="https://t.me/Veoi3/" target="_blank" rel="noopener noreferrer"
                            className="text-secondary-400 hover:text-accent-500 transition">
                             <RiTelegram2Fill size={24}/>
                         </a>
-                        <a href="https://x.com/" target="_blank" rel="noopener noreferrer"
+                        <a href="https://x.com/veoi3official/" target="_blank" rel="noopener noreferrer"
                            className="text-secondary-400 hover:text-accent-500 transition">
                             <FaXTwitter size={24}/>
                         </a>

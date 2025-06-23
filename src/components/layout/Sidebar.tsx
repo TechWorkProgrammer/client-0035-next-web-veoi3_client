@@ -100,11 +100,11 @@ const Sidebar: React.FC<SidebarProps> = ({
 
                 <div className="flex flex-col justify-center items-center pb-8">
                     <div className="flex space-x-4 w-full justify-between px-6 md:px-8 py-6">
-                        <a href="https://t.me/" target="_blank" rel="noopener noreferrer"
+                        <a href="https://https://t.me/Veoi3/" target="_blank" rel="noopener noreferrer"
                            className="text-white hover:text-accent-500 transition bg-primary-600 rounded-full p-1.5">
                             <RiTelegram2Fill size={18}/>
                         </a>
-                        <a href="https://x.com/cypheraieth" target="_blank" rel="noopener noreferrer"
+                        <a href="https://x.com/veoi3official" target="_blank" rel="noopener noreferrer"
                            className="text-white hover:text-accent-500 transition bg-primary-600 rounded-full p-1.5">
                             <FaXTwitter size={18}/>
                         </a>
