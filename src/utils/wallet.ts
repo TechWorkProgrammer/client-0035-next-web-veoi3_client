@@ -27,33 +27,7 @@ export const connectWallet = async (
                 localStorage.setItem("connectedWallet", walletName);
                 return {success: true, walletName, address};
             }
-            /*const dappUrl = window.location.href;
-            const linkUrl = `https://metamask.app.link/dapp/${encodeURIComponent(dappUrl)}`;
-            window.open(linkUrl, "_blank");
-            const address = await (async () => {
-                const start = Date.now();
-                while (Date.now() - start < 15000) {
-                    if ((window as any).ethereum?.isMetaMask) {
-                        try {
-                            await (window as any).ethereum.request({method: "eth_requestAccounts"});
-                            const provider = new BrowserProvider((window as any).ethereum);
-                            const signer = await provider.getSigner();
-                            return await signer.getAddress();
-                        } catch {
-                            return null;
-                        }
-                    }
-                    await new Promise((r) => setTimeout(r, 500));
-                }
-                return null;
-            })();
-            if (!address) {
-                return {success: false, error: "MetaMask injection timeout"};
-            }
-            localStorage.setItem("walletAddress", address);
-            localStorage.setItem("connectedWallet", walletName);
-            return {success: true, walletName, address};*/
-            return {success: false, error: "Metamask only support Web Extension"};
+            return {success: false, error: "Metamask only support Web Extension, You can use WalletConnect with an Choose MetaMask"};
         }
 
         if (walletName === "WalletConnect") {
@@ -68,10 +42,10 @@ export const connectWallet = async (
                     methods: ["eth_requestAccounts", "personal_sign", "eth_signTypedData"],
                     events: ["accountsChanged", "chainChanged"],
                     metadata: {
-                        name: "LogicAI DApp",
-                        description: "LogicAI — generate 3D meshes with AI",
-                        url: "https://logicai.technology",
-                        icons: ["https://logicai.technology/favicon.ico"]
+                        name: "VeoI3 - AI Video Generation",
+                        description: "Generate stunning, high-quality videos from simple text or images using cutting-edge generative AI. Integrated with Web3 for a seamless creative economy.",
+                        url: "https://veoi3.app",
+                        icons: ["https://veoi3.app/favicon.ico"]
                     }
                 });
             }
