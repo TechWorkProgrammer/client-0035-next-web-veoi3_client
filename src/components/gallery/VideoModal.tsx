@@ -16,11 +16,12 @@ import {useAlert} from "@/context/Alert";
 import {FiHeart} from "react-icons/fi";
 import {getAccessToken} from "@/utils/user";
 
-interface Video {
+export interface Video {
     id: string;
     prompt: string;
     videoFiles: {
         videoUrl: string;
+        thumbnailUrl: string;
     }[];
     views: number;
     _count: {

@@ -1,23 +1,10 @@
 import React, {useState} from 'react';
 import Image from 'next/image';
 import {FaPlay} from 'react-icons/fa';
-import VideoModal from '@/components/gallery/VideoModal';
-
-export interface ExploreVideo {
-    id: string;
-    prompt: string;
-    aspectRatio: string;
-    videoFiles: {
-        videoUrl: string;
-        thumbnailUrl?: string | null;
-    }[];
-    _count: {
-        favorites: number;
-    };
-}
+import VideoModal,{Video} from '@/components/gallery/VideoModal';
 
 interface ExploreVideoCardProps {
-    video: ExploreVideo;
+    video: Video;
 }
 
 const ExploreVideoCard: React.FC<ExploreVideoCardProps> = ({video}) => {
