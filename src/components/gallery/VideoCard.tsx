@@ -1,20 +1,8 @@
 import React, {useState} from 'react';
 import Image from 'next/image';
 import {FaPlay} from 'react-icons/fa';
-import VideoModal from "@/components/gallery/VideoModal";
+import VideoModal, {Video} from "@/components/gallery/VideoModal";
 import Loader from "@/components/common/Loader";
-
-export interface Video {
-    id: string;
-    prompt: string;
-    videoFiles: {
-        videoUrl: string;
-        thumbnailUrl?: string | null;
-    }[];
-    _count: {
-        favorites: number;
-    };
-}
 
 interface VideoCardProps {
     video: Partial<Video> & { prompt: string };
