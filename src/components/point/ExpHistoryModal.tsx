@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useCallback, useRef} from 'react';
 import {format} from 'date-fns';
-import {FaTrophy, FaCog} from 'react-icons/fa';
 import Modal from '@/components/common/Modal';
 import Loader from '@/components/common/Loader';
 import {useAlert} from '@/context/Alert';
