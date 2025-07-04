@@ -8,6 +8,7 @@ import {WalletProvider} from '@/context/Wallet';
 
 import {Inter} from 'next/font/google';
 import {NotificationProvider} from '@/context/Notification';
+import {GenerationProvider} from "@/context/Generation";
 
 const inter = Inter({
     subsets: ['latin'],
@@ -28,10 +29,12 @@ function MyApp({Component, pageProps}: AppProps) {
             <AlertProvider>
                 <WalletProvider>
                     <NotificationProvider>
-                        <HeadTitle/>
-                        <div className={`flex flex-col min-h-screen ${inter.variable}`}>
-                            <Component {...pageProps} />
-                        </div>
+                        <GenerationProvider>
+                            <HeadTitle/>
+                            <div className={`flex flex-col min-h-screen ${inter.variable}`}>
+                                <Component {...pageProps} />
+                            </div>
+                        </GenerationProvider>
                     </NotificationProvider>
                 </WalletProvider>
             </AlertProvider>

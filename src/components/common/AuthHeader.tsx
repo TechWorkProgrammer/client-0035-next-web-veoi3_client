@@ -14,6 +14,7 @@ interface AuthHeaderProps {
     onPlanClick: () => void;
     onDisconnect: () => void;
     onPaymentHistoryClick: () => void;
+    onCoinHistoryClick: () => void;
 }
 
 const AuthHeader: React.FC<AuthHeaderProps> = ({
@@ -21,7 +22,8 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
                                                    onProfileClick,
                                                    onPlanClick,
                                                    onDisconnect,
-                                                   onPaymentHistoryClick
+                                                   onPaymentHistoryClick,
+                                                   onCoinHistoryClick
                                                }) => {
     const [isMounted, setIsMounted] = useState(false);
     useEffect(() => {
@@ -134,6 +136,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
                                     <span>Profile</span>
                                 </button>
                                 <button onClick={() => {
+                                    onCoinHistoryClick();
                                     setIsProfileDropdownOpen(false)
                                 }}
                                         className="w-full flex items-center gap-3 text-left px-3 py-2 text-sm rounded-md hover:bg-primary-700">

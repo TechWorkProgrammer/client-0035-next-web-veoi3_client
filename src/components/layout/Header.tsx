@@ -70,7 +70,7 @@ const Header: React.FC = () => {
                             </span>
                             </button>
 
-                            <ul className="space-x-2 md:space-x-6 hidden md:block md:flex">
+                            <ul className="space-x-2 md:space-x-6 hidden md:flex">
                                 {navItems.map((item) => (
                                     <li key={item.label}>
                                         {item.path.startsWith("http") ? (

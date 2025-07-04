@@ -1,21 +1,37 @@
 import React, {useState, useRef, useCallback} from 'react';
 import {FiFile, FiX, FiUpload} from 'react-icons/fi';
+import {useAlert} from "@/context/Alert";
 
 interface DropzoneInputProps {
     onFileChange: (file: File | null) => void;
     accept?: string;
     label?: string;
+    maxSize?: number;
 }
 
-const DropzoneInput: React.FC<DropzoneInputProps> = ({onFileChange, accept, label}) => {
+const DropzoneInput: React.FC<DropzoneInputProps> = ({onFileChange, accept, label, maxSize}) => {
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
     const [isDragging, setIsDragging] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const alert = useAlert();
 
     const handleFileSelected = useCallback((file: File) => {
+        if (maxSize && file.size > maxSize) {
+            const limitInMB = Math.ceil(maxSize / 1024 / 1024);
+            alert(
+                "File Too Large",
+                `File size cannot exceed ${limitInMB} MB. Please choose a smaller file.`,
+                "error"
+            );
+            if (inputRef.current) {
+                inputRef.current.value = "";
+            }
+            return;
+        }
+
         setSelectedFile(file);
         onFileChange(file);
-    }, [onFileChange]);
+    }, [onFileChange, maxSize, alert]);
 
     const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
         e.preventDefault();

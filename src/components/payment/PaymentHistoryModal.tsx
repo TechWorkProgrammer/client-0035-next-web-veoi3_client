@@ -61,13 +61,10 @@ const PaymentHistoryModal: React.FC<{ isOpen: boolean; onClose: () => void }> = 
             },
             {threshold: 1.0}
         );
-
         const currentObserverRef = observerRef.current;
-
         if (currentObserverRef) {
             observer.observe(currentObserverRef);
         }
-
         return () => {
             if (currentObserverRef) {
                 observer.unobserve(currentObserverRef);
@@ -87,7 +84,8 @@ const PaymentHistoryModal: React.FC<{ isOpen: boolean; onClose: () => void }> = 
     return (
         <Modal title="Payment History" onClose={onClose}>
             <div className="max-h-[70vh] overflow-y-auto pr-2 px-2">
-                <p className="text-start text-secondary-500 pb-4 text-sm">View details of your credit purchases and top-ups.</p>
+                <p className="text-start text-secondary-500 pb-4 text-sm">View details of your credit purchases and
+                    top-ups.</p>
                 {isLoading ? (
                     <div className="flex justify-center items-center h-40"><Loader/></div>
                 ) : payments.length > 0 ? (

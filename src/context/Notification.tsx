@@ -118,7 +118,7 @@ export const NotificationProvider: React.FC<{ children: ReactNode }> = ({childre
         }
 
         try {
-            await api.delete(`/notifications/${notificationId}`);
+            await api.delete(`/notification/${notificationId}`);
         } catch (error: any) {
             alert("Error", "Failed to delete notification - " + error.message, "error");
             setNotifications(originalNotifications);

@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import ReactDOM from 'react-dom';
 import {FaCompress, FaDownload, FaExpand, FaPause, FaPlay, FaTimes, FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
 
@@ -27,32 +27,54 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
 
+    const togglePlay = useCallback(() => {
+        if (!videoRef.current) return;
+        if (isPlaying) {
+            videoRef.current.pause();
+        } else {
+            videoRef.current.play().catch(console.error);
+        }
+        setIsPlaying(prev => !prev);
+    }, [isPlaying]);
+
+    const toggleFullscreen = useCallback(() => {
+        if (!modalRef.current) return;
+        if (!document.fullscreenElement) {
+            modalRef.current.requestFullscreen().catch(console.error);
+        } else {
+            document.exitFullscreen().catch(console.error);
+        }
+    }, []);
+
+    useEffect(() => {
+        const handleFullscreenChange = () => {
+            setIsFullscreen(!!document.fullscreenElement);
+        };
+        document.addEventListener('fullscreenchange', handleFullscreenChange);
+        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+    }, []);
+
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === 'Escape') onClose();
-            if (event.key === 'f' && videoRef.current) toggleFullscreen();
+            if (event.key === 'f') toggleFullscreen();
             if (event.key === ' ') {
                 event.preventDefault();
                 togglePlay();
             }
         };
+
         window.addEventListener('keydown', handleKeyDown);
         document.body.style.overflow = 'hidden';
+
         return () => {
             window.removeEventListener('keydown', handleKeyDown);
             document.body.style.overflow = 'auto';
         };
-    }, []);
+    }, [onClose, toggleFullscreen, togglePlay]);
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
         if (modalRef.current && e.target === modalRef.current) onClose();
-    };
-
-    const togglePlay = () => {
-        if (!videoRef.current) return;
-        if (isPlaying) videoRef.current.pause();
-        else videoRef.current.play().then();
-        setIsPlaying(!isPlaying);
     };
 
     const toggleMute = () => {
@@ -61,17 +83,8 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
         setIsMuted(!isMuted);
     };
 
-    const toggleFullscreen = () => {
-        if (!modalRef.current) return;
-        if (!isFullscreen) {
-            modalRef.current.requestFullscreen()?.then(() => setIsFullscreen(true));
-        } else {
-            document.exitFullscreen()?.then(() => setIsFullscreen(false));
-        }
-    };
-
     const handleTimeUpdate = () => {
-        if (!videoRef.current) return;
+        if (!videoRef.current || !isFinite(videoRef.current.duration)) return;
         const curr = videoRef.current.currentTime;
         const dur = videoRef.current.duration;
         setCurrentTime(curr);
@@ -80,8 +93,8 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
     };
 
     const handleSeek = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (!videoRef.current) return;
-        videoRef.current.currentTime = Number(e.target.value) / 100 * duration;
+        if (!videoRef.current || !isFinite(duration)) return;
+        videoRef.current.currentTime = (Number(e.target.value) / 100) * duration;
         setProgress(Number(e.target.value));
     };
 
@@ -152,7 +165,7 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
                     )}
                 </div>
 
-                <div className="md:px-6 flex flex-col items-center max-w-7xl mx-auto">
+                <div className="md:px-6 flex flex-col items-center max-w-7xl mx-auto w-full pt-2">
                     <input
                         type="range"
                         min={0}

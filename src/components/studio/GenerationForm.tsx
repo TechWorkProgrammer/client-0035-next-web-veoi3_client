@@ -22,6 +22,8 @@ interface GenerationFormProps {
 
 const TOKENS_PER_SECOND_VIDEO = 10;
 const TOKENS_PER_SECOND_AUDIO = 5;
+const MAX_FILE_SIZE_BYTES = 972800;
+const ACCEPTED_IMAGE_TYPES = "image/png, image/jpeg, image/webp";
 
 const aspectRatioOptions = [
     {value: '16:9', label: 'Landscape', icon: <div className="w-10 h-[22.5px] bg-primary-600 rounded-sm"></div>},
@@ -97,7 +99,8 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
                 {generationMode === 'image' && (
                     <motion.div initial={{opacity: 0, height: 0}} animate={{opacity: 1, height: 'auto'}}
                                 exit={{opacity: 0, height: 0}}>
-                        <DropzoneInput onFileChange={setImageFile}/>
+                        <DropzoneInput label={"Image"} onFileChange={setImageFile} maxSize={MAX_FILE_SIZE_BYTES}
+                                       accept={ACCEPTED_IMAGE_TYPES}/>
                     </motion.div>
                 )}
             </AnimatePresence>

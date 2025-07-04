@@ -5,6 +5,7 @@ import {useWallet} from "@/context/Wallet";
 import ModalPlan from "@/components/payment/ModalPlan";
 import WalletConnectModal from "@/components/common/WalletConnectModal";
 import PaymentHistoryModal from "@/components/payment/PaymentHistoryModal";
+import ExpHistoryModal from "@/components/point/ExpHistoryModal";
 
 interface MainPageLayoutProps {
     headerComponent: ReactNode;
@@ -15,6 +16,7 @@ const MainLayout: React.FC<MainPageLayoutProps> = ({headerComponent, children}) 
     const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const [isPlanModalOpen, setIsPlanModalOpen] = useState(false);
     const [isPaymentHistoryOpen, setIsPaymentHistoryOpen] = useState(false);
+    const [isCoinHistoryOpen, setIsCoinHistoryOpen] = useState(false);
     const {disconnectWallet} = useWallet();
 
     return (
@@ -28,6 +30,7 @@ const MainLayout: React.FC<MainPageLayoutProps> = ({headerComponent, children}) 
                         onProfileClick={() => setIsProfileModalOpen(true)}
                         onPlanClick={() => setIsPlanModalOpen(true)}
                         onPaymentHistoryClick={() => setIsPaymentHistoryOpen(true)}
+                        onCoinHistoryClick={() => setIsCoinHistoryOpen(true)}
                         onDisconnect={disconnectWallet}
                     />
                 </div>
@@ -42,6 +45,7 @@ const MainLayout: React.FC<MainPageLayoutProps> = ({headerComponent, children}) 
             <ModalPlan isOpen={isPlanModalOpen} onClose={() => setIsPlanModalOpen(false)}/>
             <WalletConnectModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)}/>
             <PaymentHistoryModal isOpen={isPaymentHistoryOpen} onClose={() => setIsPaymentHistoryOpen(false)}/>
+            <ExpHistoryModal isOpen={isCoinHistoryOpen} onClose={() => setIsCoinHistoryOpen(false)}/>
         </SidebarLayout>
     );
 };
