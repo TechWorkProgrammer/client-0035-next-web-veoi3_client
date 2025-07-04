@@ -5,7 +5,7 @@ import VideoModal, {Video} from "@/components/gallery/VideoModal";
 import Loader from "@/components/common/Loader";
 
 interface VideoCardProps {
-    video: Partial<Video> & { prompt: string };
+    video: Video;
     isProcessing?: boolean;
 }
 

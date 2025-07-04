@@ -2,7 +2,7 @@ import React, {createContext, useState, useContext, useRef, useEffect, useCallba
 import api from '@/utils/axios';
 import {useWallet} from '@/context/Wallet';
 import {useAlert} from '@/context/Alert';
-import {Video} from '@/components/gallery/VideoCard';
+import {Video} from '@/components/gallery/VideoModal';
 
 export interface GeneratingJob extends Partial<Video> {
     jobId: string;
