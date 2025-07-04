@@ -15,10 +15,10 @@ interface IExpHistory {
 
 const typeStyles = {
     EARN_SUCCESS_GENERATE: {
-        title: 'EXP Reward',
+        title: 'Coin Reward',
     },
     ADJUSTMENT_EXP: {
-        title: 'EXP Adjustment',
+        title: 'Coin Adjustment',
     },
 };
 
@@ -46,7 +46,7 @@ const ExpHistoryModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({is
             setHasMore(pagination.currentPage < pagination.totalPages);
 
         } catch (error: any) {
-            alert("Error", "Failed to fetch EXP history. - " + error.message, "error");
+            alert("Error", "Failed to fetch Coin history. - " + error.message, "error");
         } finally {
             setIsLoading(false);
             setIsFetchingMore(false);
@@ -120,7 +120,7 @@ const ExpHistoryModal: React.FC<{ isOpen: boolean; onClose: () => void }> = ({is
                                         </div>
                                     </div>
                                     <p className={`font-bold text-lg ${isPositive ? 'text-green-400' : 'text-red-400'}`}>
-                                        {isPositive ? '+' : ''}{item.amount}
+                                        {isPositive ? '+' : ''}{item.amount}{" $VEOI"}
                                     </p>
                                 </div>
                             );

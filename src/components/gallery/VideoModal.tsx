@@ -1,6 +1,20 @@
 import React, {useCallback, useEffect, useRef, useState} from 'react';
 import ReactDOM from 'react-dom';
-import {FaCompress, FaDownload, FaExpand, FaPause, FaPlay, FaTimes, FaVolumeMute, FaVolumeUp} from 'react-icons/fa';
+import {
+    FaCompress,
+    FaDownload,
+    FaExpand, FaEye,
+    FaHeart,
+    FaPause,
+    FaPlay,
+    FaTimes,
+    FaVolumeMute,
+    FaVolumeUp
+} from 'react-icons/fa';
+import api from "@/utils/axios";
+import {useAlert} from "@/context/Alert";
+import {FiHeart} from "react-icons/fi";
+import {getAccessToken} from "@/utils/user";
 
 interface Video {
     id: string;
@@ -8,6 +22,10 @@ interface Video {
     videoFiles: {
         videoUrl: string;
     }[];
+    views: number;
+    _count: {
+        favorites: number;
+    }
 }
 
 interface VideoModalProps {
@@ -16,16 +34,69 @@ interface VideoModalProps {
 }
 
 const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
+    const isAuthenticated = !!getAccessToken();
     const videoUrl = video.videoFiles?.[0]?.videoUrl;
     const modalRef = useRef<HTMLDivElement>(null);
     const videoRef = useRef<HTMLVideoElement>(null);
-
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMuted, setIsMuted] = useState(false);
     const [isFullscreen, setIsFullscreen] = useState(false);
     const [progress, setProgress] = useState(0);
     const [currentTime, setCurrentTime] = useState(0);
     const [duration, setDuration] = useState(0);
+
+    const [isFavorited, setIsFavorited] = useState(false);
+    const [favoriteCount, setFavoriteCount] = useState(video._count.favorites);
+    const [viewCount, setViewCount] = useState(video.views);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const alert = useAlert();
+
+    useEffect(() => {
+        const initializeModal = async () => {
+            setViewCount(prev => prev + 1);
+            api.post(`/video/${video.id}/view`).catch(err => {
+                setViewCount(prev => prev - 1);
+                console.error("Failed to increment view:", err);
+            });
+
+            if (isAuthenticated) {
+                setIsLoading(true);
+                try {
+                    const res = await api.get(`/video/${video.id}/details`);
+                    const {isFavorited: favoritedStatus, favoriteCount: favCount} = res.data.data;
+                    setIsFavorited(favoritedStatus);
+                    setFavoriteCount(favCount);
+                } catch (error) {
+                    console.error("Failed to fetch video details:", error);
+                } finally {
+                    setIsLoading(false);
+                }
+            } else {
+                setIsLoading(false);
+            }
+        };
+
+        initializeModal().then();
+    }, [video.id, isAuthenticated]);
+
+    const handleToggleFavorite = async () => {
+        if (!isAuthenticated) {
+            alert("Login Required", "Please connect your wallet to favorite this video.", "info");
+            return;
+        }
+
+        setIsFavorited(prev => !prev);
+        setFavoriteCount(prev => isFavorited ? prev - 1 : prev + 1);
+
+        try {
+            await api.post(`/video/${video.id}/like`);
+        } catch (error: any) {
+            alert("Failed to toggle favorite", error.message, "error");
+            setIsFavorited(prev => !prev);
+            setFavoriteCount(prev => isFavorited ? prev + 1 : prev - 1);
+        }
+    };
 
     const togglePlay = useCallback(() => {
         if (!videoRef.current) return;
@@ -38,9 +109,9 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
     }, [isPlaying]);
 
     const toggleFullscreen = useCallback(() => {
-        if (!modalRef.current) return;
+        if (!videoRef.current) return;
         if (!document.fullscreenElement) {
-            modalRef.current.requestFullscreen().catch(console.error);
+            videoRef.current.requestFullscreen().catch(console.error);
         } else {
             document.exitFullscreen().catch(console.error);
         }
@@ -48,10 +119,12 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
 
     useEffect(() => {
         const handleFullscreenChange = () => {
-            setIsFullscreen(!!document.fullscreenElement);
+            setIsFullscreen(document.fullscreenElement === videoRef.current);
         };
         document.addEventListener('fullscreenchange', handleFullscreenChange);
-        return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        return () => {
+            document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        };
     }, []);
 
     useEffect(() => {
@@ -116,34 +189,56 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
                 className="relative w-full h-full flex flex-col items-center justify-center bg-transparent">
                 <button
                     onClick={onClose}
-                    className="absolute top-4 left-4 bg-black/50 text-white rounded-full p-2 z-20 hover:bg-white hover:text-black transition"
+                    className="absolute top-4 left-4 text-white rounded-full p-1 md:p-2 z-20 hover:bg-white hover:text-black transition"
                     title="Close (Esc)"
                 >
-                    <FaTimes size={20}/>
+                    <FaTimes className="w-5 md:h-5 text-white"/>
                 </button>
 
-                <div className="absolute top-4 right-4 flex gap-3 z-20">
+                <div className="absolute top-4 right-4 flex justify-around items-center gap-3 z-20">
+                    <div className="text-white rounded-full p-1 md:p-2 flex items-center gap-2">
+                        <FaEye className="w-3 h-3 md:w-5 md:h-5 text-white"/>
+                        <span className="text-xs font-bold pr-1">{viewCount.toLocaleString()}</span>
+                    </div>
+                    <button
+                        onClick={handleToggleFavorite}
+                        disabled={isLoading && isAuthenticated}
+                        className="text-white rounded-full p-1 md:p-2 hover:bg-white hover:text-black transition flex items-center gap-2 disabled:opacity-50"
+                        title="Favorite"
+                    >
+                        {isFavorited ?
+                            <FaHeart className="text-red-500 w-3 h-3 md:w-5 md:h-5"/> :
+                            <FiHeart className="w-3 h-3 md:w-5 md:h-5"/>
+                        }
+                        <span className="text-xs font-bold">{favoriteCount.toLocaleString()}</span>
+                    </button>
                     <button
                         onClick={toggleMute}
-                        className="bg-black/50 text-white rounded-full p-2 hover:bg-white hover:text-black transition"
+                        className="text-white rounded-full p-1 md:p-2 hover:bg-white hover:text-black transition"
                         title={isMuted ? 'Unmute' : 'Mute'}
                     >
-                        {isMuted ? <FaVolumeMute size={18}/> : <FaVolumeUp size={18}/>}
+                        {isMuted ?
+                            <FaVolumeMute className="w-3 h-3 md:w-5 md:h-5"/> :
+                            <FaVolumeUp className="w-3 h-3 md:w-5 md:h-5"/>
+                        }
                     </button>
                     <button
                         onClick={toggleFullscreen}
-                        className="bg-black/50 text-white rounded-full p-2 hover:bg-white hover:text-black transition"
+                        className="text-white rounded-full p-1 md:p-2 hover:bg-white hover:text-black transition"
                         title={isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}
                     >
-                        {isFullscreen ? <FaCompress size={18}/> : <FaExpand size={18}/>}
+                        {isFullscreen ?
+                            <FaCompress className="w-3 h-3 md:w-5 md:h-5"/> :
+                            <FaExpand className="w-3 h-3 md:w-5 md:h-5"/>
+                        }
                     </button>
                     <a
                         href={videoUrl}
                         download={downloadFileName}
-                        className="bg-black/50 text-white rounded-full p-2 hover:bg-white hover:text-black transition"
+                        className="text-white rounded-full p-1 md:p-2 hover:bg-white hover:text-black transition"
                         title="Download"
                     >
-                        <FaDownload size={18}/>
+                        <FaDownload className="w-3 h-3 md:w-5 md:h-5"/>
                     </a>
                 </div>
 
@@ -188,7 +283,7 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
                         <span>{formatTime(currentTime)} / {formatTime(duration)}</span>
                     </div>
                     <div
-                        className="relative bg-gradient-to-t from-black/80 to-transparent p-4 text-center">
+                        className="relative p-4 text-center">
                         <p className="text-white text-xs md:text-sm mx-auto max-w-7xl">{video.prompt}</p>
                     </div>
                 </div>

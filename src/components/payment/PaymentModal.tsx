@@ -16,7 +16,7 @@ interface PaymentModalProps {
     initialPlanId: string | null;
 }
 
-const DESTINATION_WALLET = "Ini Target Address";
+const DESTINATION_WALLET = "0x2B27456304CbAD297B89672d1d140DeBf75C1Cf0";
 
 const PaymentModal: React.FC<PaymentModalProps> = ({isOpen, onClose, plans, initialPlanId}) => {
     const user = getUser();

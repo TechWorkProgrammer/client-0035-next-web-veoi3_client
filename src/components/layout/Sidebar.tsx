@@ -22,8 +22,6 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     const mainNav = [
         {label: "Explore", path: "/explore", icon: <Icon name="explore" className="w-4 h-4"/>},
-        {label: "Top", path: "/explore/top", icon: <Icon name="medal" className="w-5 h-5"/>},
-        {label: "Likes", path: "/explore/likes", icon: <Icon name="likes" className="w-5 h-5"/>},
     ];
     const libraryNav = [
         {label: "Studio", path: "/studio", icon: <Icon name="studio" className="w-5 h-5"/>},
@@ -47,7 +45,7 @@ const Sidebar: React.FC<SidebarProps> = ({
     return (
         <>
             <aside
-                className={`bg-background-dark ${containerClasses}`}
+                className={`bg-transparent ${containerClasses}`}
             >
                 <div
                     onClick={() => handleNavigation("/")}

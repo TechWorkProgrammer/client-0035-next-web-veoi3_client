@@ -1,5 +1,4 @@
 import React, {useState, useRef, useEffect} from 'react';
-import {FiSearch} from 'react-icons/fi';
 import {FaCheck} from 'react-icons/fa';
 import Icon from "@/components/common/Icon";
 
@@ -7,13 +6,11 @@ export type ExploreFilterType = 'newest' | 'views' | 'likes';
 
 interface ExploreHeaderProps {
     onFilterChange: (filter: ExploreFilterType) => void;
-    onSearch: (searchTerm: string) => void;
 }
 
-const ExploreHeader: React.FC<ExploreHeaderProps> = ({onFilterChange, onSearch}) => {
+const ExploreHeader: React.FC<ExploreHeaderProps> = ({onFilterChange}) => {
     const [activeFilter, setActiveFilter] = useState<ExploreFilterType>('newest');
     const [isFilterOpen, setIsFilterOpen] = useState(false);
-    const [searchTerm, setSearchTerm] = useState('');
     const filterRef = useRef<HTMLDivElement>(null);
 
     const filterTitles: Record<ExploreFilterType, string> = {
@@ -37,12 +34,6 @@ const ExploreHeader: React.FC<ExploreHeaderProps> = ({onFilterChange, onSearch})
         document.addEventListener("mousedown", handleClickOutside);
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, [filterRef]);
-
-    const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key === 'Enter' && searchTerm.trim() !== '') {
-            onSearch(searchTerm);
-        }
-    };
 
     const selectFilter = (filter: ExploreFilterType) => {
         setActiveFilter(filter);
@@ -77,18 +68,6 @@ const ExploreHeader: React.FC<ExploreHeaderProps> = ({onFilterChange, onSearch})
                         </div>
                     )}
                 </div>
-            </div>
-
-            <div className="relative w-full max-w-xs">
-                <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-secondary-400"/>
-                <input
-                    type="text"
-                    placeholder="Search prompt..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    onKeyDown={handleSearch}
-                    className="w-full bg-transparent border-b-2 border-primary-700 focus:border-accent-500 focus:outline-none pl-10 py-1 md:pr-4 md:py-2 transition text-white placeholder-secondary-400 text-sm md:text-md"
-                />
             </div>
         </div>
     );

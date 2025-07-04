@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from "react";
+import React, {useState, useEffect, useCallback, useRef} from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import GalleryHeader from "@/components/gallery/GalleryHeader";
 import VideoCard from "@/components/gallery/VideoCard";
@@ -14,33 +14,80 @@ import {useGeneration} from "@/context/Generation";
 const GalleryPage: React.FC = () => {
     const router = useRouter();
     const alert = useAlert();
+    const alertRef = useRef(alert);
+    useEffect(() => {
+        alertRef.current = alert;
+    }, [alert]);
+
     const {connectedWallet} = useWallet();
     const {generatingJobs} = useGeneration();
 
     const [videos, setVideos] = useState<any[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [isLoading, setIsLoading] = useState(false);
+    const [isFetchingMore, setIsFetchingMore] = useState(false);
 
-    const fetchVideos = useCallback(async () => {
-        if (!connectedWallet) {
-            setVideos([]);
-            setIsLoading(false);
-            return;
-        }
-        setIsLoading(true);
-        try {
-            const res = await api.get("/video/my-creations", {params: {limit: 50}});
-            setVideos(res.data.data.videos);
-        } catch (err: any) {
-            const msg = err.response?.data?.message || "Failed to load your videos.";
-            alert("Loading Failed", msg, "error");
-        } finally {
-            setIsLoading(false);
-        }
-    }, [connectedWallet, alert]);
+    const loadMoreRef = useRef<HTMLDivElement>(null);
+
+    const fetchVideos = useCallback(
+        async (pageNum = 1) => {
+            if (!connectedWallet) {
+                setVideos([]);
+                setIsLoading(false);
+                setIsFetchingMore(false);
+                return;
+            }
+            if (pageNum === 1) {
+                setIsLoading(true);
+            } else {
+                setIsFetchingMore(true);
+            }
+
+            try {
+                const res = await api.get("/video/my-creations", {
+                    params: {page: pageNum, limit: 50},
+                });
+                const {videos: newVideos, pagination} = res.data.data;
+                setTotalPages(pagination.totalPages);
+
+                if (pageNum === 1) {
+                    setVideos(newVideos);
+                } else {
+                    setVideos(prev => [...prev, ...newVideos]);
+                }
+                setPage(pagination.currentPage);
+            } catch (err: any) {
+                const msg = err.response?.data?.message || "Failed to load your videos.";
+                alertRef.current("Loading Failed", msg, "error");
+            } finally {
+                setIsLoading(false);
+                setIsFetchingMore(false);
+            }
+        },
+        [connectedWallet]
+    );
 
     useEffect(() => {
-        fetchVideos().then();
-    }, [fetchVideos]);
+        setVideos([]);
+        setPage(1);
+        setTotalPages(1);
+        fetchVideos(1).then();
+    }, [connectedWallet, fetchVideos]);
+
+    useEffect(() => {
+        if (!loadMoreRef.current) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !isFetchingMore && page < totalPages) {
+                    fetchVideos(page + 1).then();
+                }
+            },
+            {rootMargin: "200px"}
+        );
+        observer.observe(loadMoreRef.current);
+        return () => observer.disconnect();
+    }, [page, totalPages, isFetchingMore, fetchVideos]);
 
     const renderContent = () => {
         if (!connectedWallet) {
@@ -83,27 +130,29 @@ const GalleryPage: React.FC = () => {
         }
 
         return (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                {generatingJobs.map((job) => (
-                    <VideoCard
-                        key={job.jobId}
-                        video={{id: job.jobId, prompt: job.prompt}}
-                        isProcessing={true}
-                    />
-                ))}
+            <>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
+                    {generatingJobs.map(job => (
+                        <VideoCard
+                            key={job.jobId}
+                            video={{id: job.jobId, prompt: job.prompt}}
+                            isProcessing={true}
+                        />
+                    ))}
 
-                {videos.map((video) => (
-                    <VideoCard key={video.id} video={video}/>
-                ))}
-            </div>
+                    {videos.map(video => (
+                        <VideoCard key={video.id} video={video}/>
+                    ))}
+                </div>
+                <div ref={loadMoreRef} className="h-8 flex justify-center items-center">
+                    {isFetchingMore && <Loader size="small"/>}
+                </div>
+            </>
         );
     };
 
     return (
         <MainLayout headerComponent={<GalleryHeader/>}>
-            <div className="flex justify-start mb-6">
-                <h3 className="text-xl font-semibold text-white">All My Videos</h3>
-            </div>
             <div className="w-full">{renderContent()}</div>
         </MainLayout>
     );

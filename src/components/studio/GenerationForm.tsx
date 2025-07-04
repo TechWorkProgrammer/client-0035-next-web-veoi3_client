@@ -4,6 +4,7 @@ import {getUser} from '@/utils/user';
 import DropzoneInput from '@/components/common/DropzoneInput';
 import {motion, AnimatePresence} from 'framer-motion';
 import {FaPlay} from "react-icons/fa";
+import {useAlert} from "@/context/Alert";
 
 interface FormData {
     prompt: string;
@@ -43,9 +44,10 @@ const initialFormState: FormData = {
 
 const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating}) => {
     const [isMounted, setIsMounted] = useState(false);
-    const [generationMode, setGenerationMode] = useState<'text' | 'image'>('text');
+    const [generationMode, setGenerationMode] = useState<'text' | 'image' | 'narration' | 'custom'>('text');
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [form, setForm] = useState<FormData>(initialFormState);
+    const alert = useAlert();
 
     useEffect(() => {
         setIsMounted(true);
@@ -86,12 +88,20 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
 
     return (
         <div className="space-y-5">
-            <div className="grid grid-cols-2 gap-2 bg-background-dark p-1 rounded-xl">
+            <div className="grid grid-cols-4 gap-2 bg-background-dark p-1 rounded-xl">
                 <button onClick={() => setGenerationMode('text')}
                         className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${generationMode === 'text' ? 'bg-primary-700' : 'bg-transparent text-secondary-400'}`}>Text-to-Video
                 </button>
                 <button onClick={() => setGenerationMode('image')}
                         className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${generationMode === 'image' ? 'bg-primary-700' : 'bg-transparent text-secondary-400'}`}>Image-to-Video
+                </button>
+                <button onClick={() => alert("Coming Soon","We're working hard on this feature. Stay tuned for updates!","info")}
+                        className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${generationMode === 'narration' ? 'bg-primary-700' : 'bg-transparent text-secondary-400'}`}>AI
+                    Narration & Sound Effects
+                </button>
+                <button onClick={() => alert("Coming Soon","We're working hard on this feature. Stay tuned for updates!","info")}
+                        className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${generationMode === 'custom' ? 'bg-primary-700' : 'bg-transparent text-secondary-400'}`}>Customizable
+                    Video Styles
                 </button>
             </div>
 

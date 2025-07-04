@@ -34,7 +34,7 @@ const Banner: React.FC = () => {
                         Start Creating Now
                     </button>
                 </div>
-                <div className="relative flex justify-center items-center w-full h-[160px] mt-10 z-0">
+                {/*<div className="relative flex justify-center items-center w-full h-[160px] mt-10 z-0">
                     <motion.div
                         className="absolute w-[90%] aspect-square rounded-full bg-gradient-to-r from-white to-accent-500 -top-10 blur-2xl"
                         initial={{opacity: 0, scale: 0.8}}
@@ -49,11 +49,11 @@ const Banner: React.FC = () => {
                         viewport={{once: false}}
                         transition={{duration: 0.8, delay: 0.2}}
                     />
-                </div>
+                </div>*/}
                 <div
-                    className="relative w-[90vw] md:w-[95vw] aspect-[20/9] rounded overflow-hidden shadow-lg mx-auto">
+                    className="relative w-[360px] md:w-[1080px] aspect-[16/9] rounded overflow-hidden shadow-lg mx-auto mt-8">
                     <Image
-                        src="/assets/images/banner.png"
+                        src="/assets/gif/veoi3-head.gif"
                         alt="Generated Example"
                         fill
                         style={{objectFit: "cover", objectPosition: "top"}}
