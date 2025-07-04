@@ -19,12 +19,12 @@ import {getAccessToken} from "@/utils/user";
 export interface Video {
     id: string;
     prompt: string;
-    videoFiles: {
+    videoFiles?: {
         videoUrl: string;
         thumbnailUrl: string;
     }[];
-    views: number;
-    _count: {
+    views?: number;
+    _count?: {
         favorites: number;
     }
 }
@@ -47,8 +47,8 @@ const VideoModal: React.FC<VideoModalProps> = ({video, onClose}) => {
     const [duration, setDuration] = useState(0);
 
     const [isFavorited, setIsFavorited] = useState(false);
-    const [favoriteCount, setFavoriteCount] = useState(video._count.favorites);
-    const [viewCount, setViewCount] = useState(video.views);
+    const [favoriteCount, setFavoriteCount] = useState(video._count?.favorites ? video._count?.favorites : 0);
+    const [viewCount, setViewCount] = useState(video.views? video.views : 0);
     const [isLoading, setIsLoading] = useState(true);
 
     const alert = useAlert();
