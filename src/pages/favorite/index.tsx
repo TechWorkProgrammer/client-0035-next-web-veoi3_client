@@ -1,6 +1,5 @@
 import React, {useState, useEffect, useCallback, useRef} from "react";
 import MainLayout from "@/components/layout/MainLayout";
-import {FiHeart} from "react-icons/fi";
 import Button from "@/components/common/Button";
 import FavoriteHeader from "@/components/favorite/FavoriteHeader";
 import {useRouter} from "next/router";
@@ -10,6 +9,7 @@ import {useAlert} from "@/context/Alert";
 import Loader from "@/components/common/Loader";
 import VideoCard from "@/components/gallery/VideoCard";
 import {getAccessToken} from "@/utils/user";
+import {FaStar} from "react-icons/fa";
 
 const FavoritesPage: React.FC = () => {
     const router = useRouter();
@@ -105,7 +105,7 @@ const FavoritesPage: React.FC = () => {
             return (
                 <div className="flex flex-col items-center justify-center text-center p-12 rounded-2xl min-h-[50vh]">
                     <div className="bg-primary-800 p-4 rounded-full mb-6">
-                        <FiHeart className="w-10 h-10 text-accent-400"/>
+                        <FaStar className="w-10 h-10 text-accent-400"/>
                     </div>
                     <h4 className="text-2xl font-bold text-white">Connection Needed</h4>
                     <p className="text-secondary-400 mt-2 max-w-sm">
@@ -127,7 +127,7 @@ const FavoritesPage: React.FC = () => {
             return (
                 <div className="flex flex-col items-center justify-center text-center p-12 rounded-2xl min-h-[50vh]">
                     <div className="bg-primary-800 p-4 rounded-full mb-6">
-                        <FiHeart className="w-10 h-10 text-accent-400"/>
+                        <FaStar className="w-10 h-10 text-accent-400"/>
                     </div>
                     <h4 className="text-2xl font-bold text-white">No Favorites Yet</h4>
                     <p className="text-secondary-400 mt-2 max-w-sm">

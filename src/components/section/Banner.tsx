@@ -7,7 +7,7 @@ const Banner: React.FC = () => {
     return (
         <section
             id="about"
-            className="relative py-28 lg:py-56 flex flex-col items-center justify-start bg-cover bg-no-repeat"
+            className="relative py-28 lg:py-56 flex flex-col items-center justify-start bg-cover bg-no-repeat z-20"
             style={{
                 backgroundImage: "url('/assets/gif/veoi_old.webp')",
                 backgroundPosition: "top",
