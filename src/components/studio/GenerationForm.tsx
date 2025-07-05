@@ -48,6 +48,7 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [form, setForm] = useState<FormData>(initialFormState);
     const alert = useAlert();
+    const [submitting, setSubmitting] = useState(false);
 
     useEffect(() => {
         setIsMounted(true);
@@ -71,19 +72,25 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
         setGenerationMode('text');
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if (!isReadyToSubmit) return;
+        setSubmitting(true);
 
         const formDataToSubmit = new FormData();
         Object.entries(form).forEach(([key, value]) => {
             formDataToSubmit.append(key, String(value));
         });
-
         if (generationMode === 'image' && imageFile) {
             formDataToSubmit.append('image', imageFile);
         }
 
-        onGenerate(formDataToSubmit);
+        try {
+            onGenerate(formDataToSubmit);
+        } catch (e: any) {
+            alert("Error", e.message || "Failed to start generation", "error");
+        } finally {
+            setSubmitting(false);
+        }
     };
 
     return (
@@ -95,12 +102,14 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
                 <button onClick={() => setGenerationMode('image')}
                         className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${generationMode === 'image' ? 'bg-primary-700' : 'bg-transparent text-secondary-400'}`}>Image-to-Video
                 </button>
-                <button onClick={() => alert("Coming Soon","We're working hard on this feature. Stay tuned for updates!","info")}
-                        className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${generationMode === 'narration' ? 'bg-primary-700' : 'bg-transparent text-secondary-400'}`}>AI
+                <button
+                    onClick={() => alert("Coming Soon", "We're working hard on this feature. Stay tuned for updates!", "info")}
+                    className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${generationMode === 'narration' ? 'bg-primary-700' : 'bg-transparent text-secondary-400'}`}>AI
                     Narration & Sound Effects
                 </button>
-                <button onClick={() => alert("Coming Soon","We're working hard on this feature. Stay tuned for updates!","info")}
-                        className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${generationMode === 'custom' ? 'bg-primary-700' : 'bg-transparent text-secondary-400'}`}>Customizable
+                <button
+                    onClick={() => alert("Coming Soon", "We're working hard on this feature. Stay tuned for updates!", "info")}
+                    className={`px-4 py-2 rounded-lg text-sm font-semibold transition ${generationMode === 'custom' ? 'bg-primary-700' : 'bg-transparent text-secondary-400'}`}>Customizable
                     Video Styles
                 </button>
             </div>
@@ -197,7 +206,7 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
                         label={isGenerating ? 'Generating...' : 'Generate'}
                         onClick={handleSubmit}
                         fullWidth
-                        disabled={!isMounted || !isReadyToSubmit}
+                        disabled={!isMounted || !isReadyToSubmit || submitting}
                         icon={<FaPlay className="w-3 h-3"/>}
                         iconPosition="right"
                     />

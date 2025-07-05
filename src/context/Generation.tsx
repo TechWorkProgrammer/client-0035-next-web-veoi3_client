@@ -109,8 +109,11 @@ export const GenerationProvider: React.FC<{ children: React.ReactNode }> = ({chi
     }
 
     useEffect(() => {
+        const intervals = pollingIntervals.current;
+
         return () => {
-            pollingIntervals.current.forEach(interval => clearInterval(interval));
+            intervals.forEach(interval => clearInterval(interval));
+            intervals.clear();
         };
     }, []);
 

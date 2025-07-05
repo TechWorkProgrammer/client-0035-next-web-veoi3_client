@@ -22,6 +22,7 @@ const Sidebar: React.FC<SidebarProps> = ({
 
     const mainNav = [
         {label: "Explore", path: "/explore", icon: <Icon name="explore" className="w-4 h-4"/>},
+        {label: "Like", path: "/like", icon: <Icon name="likes" className="w-4 h-4"/>},
     ];
     const libraryNav = [
         {label: "Studio", path: "/studio", icon: <Icon name="studio" className="w-5 h-5"/>},
@@ -41,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({
             ? `fixed top-0 left-0 bottom-0 flex flex-col transition-all duration-300 ${
                 isMinimized ? "w-20" : "w-56"
             }`
-            : `fixed top-0 left-0 bottom-0 w-56 flex flex-col transition-all duration-300 z-20 pt-16`;
+            : `fixed top-0 left-0 bottom-0 w-56 flex flex-col transition-all duration-300 z-20 pt-16 bg-background`;
     return (
         <>
             <aside

@@ -1,4 +1,9 @@
-import React, {useState, useEffect, useCallback, useRef} from "react";
+import React, {
+    useState,
+    useEffect,
+    useCallback,
+    useRef
+} from "react";
 import MainLayout from "@/components/layout/MainLayout";
 import GalleryHeader from "@/components/gallery/GalleryHeader";
 import VideoCard from "@/components/gallery/VideoCard";
@@ -9,7 +14,7 @@ import api from "@/utils/axios";
 import Loader from "@/components/common/Loader";
 import {useAlert} from "@/context/Alert";
 import {useWallet} from "@/context/Wallet";
-import {useGeneration} from "@/context/Generation";
+import {useGeneration, GeneratingJob} from "@/context/Generation";
 
 const GalleryPage: React.FC = () => {
     const router = useRouter();
@@ -20,7 +25,8 @@ const GalleryPage: React.FC = () => {
     }, [alert]);
 
     const {connectedWallet} = useWallet();
-    const {generatingJobs} = useGeneration();
+    const {generatingJobs, lastCompletedJob, clearLastCompletedJob} =
+        useGeneration();
 
     const [videos, setVideos] = useState<any[]>([]);
     const [page, setPage] = useState(1);
@@ -29,6 +35,29 @@ const GalleryPage: React.FC = () => {
     const [isFetchingMore, setIsFetchingMore] = useState(false);
 
     const loadMoreRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (lastCompletedJob) {
+            api.get("/video/my-creations", {
+                params: {page: 1, limit: 1}
+            })
+                .then((res) => {
+                    const newest = res.data.data.videos[0];
+                    if (newest) {
+                        setVideos((prev) => [newest, ...prev]);
+                    }
+                })
+                .catch((err) => {
+                    const msg =
+                        err.response?.data?.message ||
+                        "Failed to fetch latest video.";
+                    alertRef.current("Error", msg, "error");
+                })
+                .finally(() => {
+                    clearLastCompletedJob();
+                });
+        }
+    }, [lastCompletedJob, clearLastCompletedJob]);
 
     const fetchVideos = useCallback(
         async (pageNum = 1) => {
@@ -54,11 +83,12 @@ const GalleryPage: React.FC = () => {
                 if (pageNum === 1) {
                     setVideos(newVideos);
                 } else {
-                    setVideos(prev => [...prev, ...newVideos]);
+                    setVideos((prev) => [...prev, ...newVideos]);
                 }
                 setPage(pagination.currentPage);
             } catch (err: any) {
-                const msg = err.response?.data?.message || "Failed to load your videos.";
+                const msg =
+                    err.response?.data?.message || "Failed to load your videos.";
                 alertRef.current("Loading Failed", msg, "error");
             } finally {
                 setIsLoading(false);
@@ -104,7 +134,11 @@ const GalleryPage: React.FC = () => {
             );
         }
 
-        if (isLoading && videos.length === 0 && generatingJobs.length === 0) {
+        if (
+            isLoading &&
+            videos.length === 0 &&
+            generatingJobs.length === 0
+        ) {
             return (
                 <div className="flex justify-center items-center min-h-[50vh]">
                     <Loader/>
@@ -120,10 +154,15 @@ const GalleryPage: React.FC = () => {
                     </div>
                     <h4 className="text-2xl font-bold text-white">No Creations Yet</h4>
                     <p className="text-secondary-400 mt-2 max-w-sm">
-                        Your gallery is empty, open the studio and generate your first video!
+                        Your gallery is empty, open the studio and generate your first
+                        video!
                     </p>
                     <div className="mt-8">
-                        <Button label="Go to Studio" color="primary" onClick={() => router.push("/studio")}/>
+                        <Button
+                            label="Go to Studio"
+                            color="primary"
+                            onClick={() => router.push("/studio")}
+                        />
                     </div>
                 </div>
             );
@@ -132,19 +171,21 @@ const GalleryPage: React.FC = () => {
         return (
             <>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
-                    {generatingJobs.map(job => (
+                    {generatingJobs.map((job: GeneratingJob) => (
                         <VideoCard
                             key={job.jobId}
                             video={{id: job.jobId, prompt: job.prompt}}
                             isProcessing={true}
                         />
                     ))}
-
-                    {videos.map(video => (
-                        <VideoCard key={video.id} video={video}/>
+                    {videos.map((video) => (
+                        <VideoCard key={video.id} video={video} isGallery={true}/>
                     ))}
                 </div>
-                <div ref={loadMoreRef} className="h-8 flex justify-center items-center">
+                <div
+                    ref={loadMoreRef}
+                    className="h-8 flex justify-center items-center"
+                >
                     {isFetchingMore && <Loader size="small"/>}
                 </div>
             </>

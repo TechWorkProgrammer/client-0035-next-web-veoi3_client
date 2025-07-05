@@ -7,9 +7,10 @@ import Loader from "@/components/common/Loader";
 interface VideoCardProps {
     video: Video;
     isProcessing?: boolean;
+    isGallery?: boolean;
 }
 
-const VideoCard: React.FC<VideoCardProps> = ({video, isProcessing = false}) => {
+const VideoCard: React.FC<VideoCardProps> = ({video, isProcessing = false, isGallery = false,}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const thumbnailUrl = video.videoFiles?.[0]?.thumbnailUrl;
@@ -23,9 +24,6 @@ const VideoCard: React.FC<VideoCardProps> = ({video, isProcessing = false}) => {
             <div
                 className="relative aspect-video bg-primary-900 flex flex-col items-center justify-center group shadow-lg p-3">
                 <Loader size="medium"/>
-                <p className="text-white text-sm text-center mt-4" title={video.prompt}>
-                    Processing...
-                </p>
                 <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
                     <p className="text-white text-sm font-semibold truncate" title={video.prompt}>
                         {video.prompt}
@@ -72,7 +70,7 @@ const VideoCard: React.FC<VideoCardProps> = ({video, isProcessing = false}) => {
             </div>
 
             {isModalOpen && video.id && (
-                <VideoModal video={video as Video} onClose={closeModal}/>
+                <VideoModal video={video as Video} onClose={closeModal} isGallery={isGallery}/>
             )}
         </>
     );

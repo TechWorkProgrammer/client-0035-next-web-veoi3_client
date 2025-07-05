@@ -1,9 +1,11 @@
-import React, {ReactNode, useState} from "react";
+import React, {ReactNode, useEffect, useState} from "react";
 import {useRouter} from "next/router";
 import Sidebar from "@/components/layout/Sidebar";
 import {FaArrowLeft, FaBars, FaTimes} from "react-icons/fa";
 import Button from "@/components/common/Button";
 import Image from "next/image";
+import WalletConnectModal from "@/components/common/WalletConnectModal";
+import {getUser} from "@/utils/user";
 
 interface SidebarLayoutProps {
     children: ReactNode;
@@ -12,12 +14,17 @@ interface SidebarLayoutProps {
 const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
     const router = useRouter();
     const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+    const [isProfileModalOpen, setIsProfileModalOpen] = useState(false);
     const [isMinimized, setIsMinimized] = useState(false);
+    const [user, setUser] = useState<any | null>(null);
+    useEffect(() => {
+        setUser(getUser());
+    }, []);
 
     return (
         <div className="min-h-screen">
             <header
-                className="fixed top-0 left-0 right-0 h-16 border-b border-b-secondary-200 bg-background-light text-white flex items-center justify-between px-4 z-40 lg:hidden">
+                className="fixed top-0 left-0 right-0 py-2 text-white flex items-center justify-between px-4 z-40 lg:hidden">
                 <div className="flex items-center gap-4">
                     <div className="lg:hidden">
                         <Button
@@ -44,16 +51,23 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
                 </div>
 
                 <div className="flex justify-end w-full">
-                    <button onClick={() => router.push("/")}>
-                        <Image
-                            src="/icon.png"
-                            alt="Cyhper Logo"
-                            width={40}
-                            height={40}
-                            style={{objectFit: "contain"}}
-                            priority
+                    {user ? (
+                        <button onClick={() => router.push("/")}>
+                            <Image
+                                src="/icon.png"
+                                alt="Cyhper Logo"
+                                width={40}
+                                height={40}
+                                style={{objectFit: "contain"}}
+                                priority
+                            />
+                        </button>
+                    ) : (
+                        <Button
+                            onClick={() => setIsProfileModalOpen(true)}
+                            label="Connect"
                         />
-                    </button>
+                    )}
                 </div>
 
             </header>
@@ -70,6 +84,7 @@ const SidebarLayout: React.FC<SidebarLayoutProps> = ({children}) => {
                     {children}
                 </div>
             </div>
+            <WalletConnectModal isOpen={isProfileModalOpen} onClose={() => setIsProfileModalOpen(false)}/>
         </div>
     );
 };

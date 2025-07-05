@@ -65,7 +65,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
         return (
             <button
                 onClick={onConnectClick}
-                className="bg-white text-black font-semibold text-lg px-6 py-1 rounded-full transition hover:bg-accent-400"
+                className="bg-white text-black font-semibold text-lg px-6 py-1 rounded-full transition hover:bg-accent-400 hidden md:block"
             >
                 Connect
             </button>
@@ -75,8 +75,8 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
     return (
         <div className="flex flex-row items-center gap-1 md:gap-4 font-semibold text-md">
             <div className="flex items-center justify-center gap-2 md:gap-3">
-                <p className="text-xs md:text-lg font-bold text-white">{user.user.token || 0} <span
-                    className="text-xs md:text-md ml-1">Token</span></p>
+                <p className="text-sm md:text-lg font-bold text-white">{user.user.token || 0} <span
+                    className="text-sm md:text-md ml-1">Token</span></p>
                 <button
                     onClick={onPlanClick}
                     className="bg-white text-background-dark rounded-full w-3 h-3 md:w-5 md:h-5 flex items-center justify-center transition hover:bg-accent-500/40"
@@ -90,10 +90,10 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
                     onClick={() => setIsNotificationDropdownOpen(!isNotificationDropdownOpen)}
                     className="flex items-center justify-center p-2 transition hover:bg-accent-500/10 text-white rounded-full"
                 >
-                    <Icon name="notification" className="w-4 h-4 md:w-6 md:h-6"/>
+                    <Icon name="notification" className="w-5 h-5 md:w-6 md:h-6"/>
                     {unreadCount > 0 && (
                         <span
-                            className="absolute -top-1 -right-1 bg-red-600 text-white text-xs font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-primary-800">
+                            className="absolute -top-1 -right-1 bg-red-600 text-white text-sm font-bold w-5 h-5 flex items-center justify-center rounded-full border-2 border-primary-800">
                             {unreadCount}
                         </span>
                     )}
@@ -114,7 +114,7 @@ const AuthHeader: React.FC<AuthHeaderProps> = ({
                         alt={user.user.username}
                         width={40}
                         height={40}
-                        className="w-4 h-4 md:w-8 md:h-8 rounded-full object-cover"
+                        className="w-5 h-5 md:w-8 md:h-8 rounded-full object-cover"
                     />
                 </button>
 
