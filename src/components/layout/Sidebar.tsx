@@ -42,11 +42,11 @@ const Sidebar: React.FC<SidebarProps> = ({
             ? `fixed top-0 left-0 bottom-0 flex flex-col transition-all duration-300 ${
                 isMinimized ? "w-20" : "w-56"
             }`
-            : `fixed top-0 left-0 bottom-0 w-56 flex flex-col transition-all duration-300 z-20 pt-16 bg-background`;
+            : `fixed top-0 left-0 bottom-0 w-56 flex flex-col transition-all duration-300 z-20 pt-16`;
     return (
         <>
             <aside
-                className={`bg-transparent ${containerClasses}`}
+                className={`bg-background md:bg-transparent ${containerClasses}`}
             >
                 <div
                     onClick={() => handleNavigation("/")}
