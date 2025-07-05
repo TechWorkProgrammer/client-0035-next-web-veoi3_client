@@ -27,11 +27,16 @@ export const connectWallet = async (
                 localStorage.setItem("connectedWallet", walletName);
                 return {success: true, walletName, address};
             }
-            return {success: false, error: "Metamask only support Web Extension, You can use WalletConnect with an Choose MetaMask"};
+            return {
+                success: false,
+                error: "Metamask only support Web Extension. You can use WalletConnect or install MetaMask."
+            };
         }
 
         if (walletName === "WalletConnect") {
-            const {EthereumProvider} = await import("@walletconnect/ethereum-provider");
+            const {EthereumProvider} = await import(
+                "@walletconnect/ethereum-provider"
+                );
             const PROJECT_ID = process.env.NEXT_PUBLIC_WC_PROJECT_ID!;
             if (!wcProvider) {
                 wcProvider = await EthereumProvider.init({
@@ -52,6 +57,7 @@ export const connectWallet = async (
 
             try {
                 await wcProvider.connect();
+                (window as any).ethereum = wcProvider;
 
                 const accounts: string[] = await wcProvider.request({
                     method: "eth_requestAccounts",
