@@ -9,7 +9,7 @@ const Banner: React.FC = () => {
             id="about"
             className="relative py-28 lg:py-56 flex flex-col items-center justify-start bg-cover bg-no-repeat"
             style={{
-                backgroundImage: "url('/assets/gif/veoi3-head.gif')",
+                backgroundImage: "url('/assets/gif/veoi_old.webp')",
                 backgroundPosition: "top",
             }}
         >
