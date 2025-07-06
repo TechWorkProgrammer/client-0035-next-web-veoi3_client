@@ -38,7 +38,7 @@ const DexToolsSection: React.FC = () => {
                 <iframe
                     id="dextools-widget"
                     title="DEXTools Trading Chart"
-                    src="https://www.dextools.io/widget-chart/en/ether/pe-light/0xb031db1f57d90727b813f875bdcf840d4af6f29f?theme=light&chartType=2&chartResolution=30&drawingToolbars=false"
+                    src="https://www.dextools.io/widget-chart/en/ether/pe-light/0xb031db1f57d90727b813f875bdcf840d4af6f29f?theme=dark&chartType=2&chartResolution=30&drawingToolbars=false"
                     className="w-full h-72 md:h-[500px] lg:h-[600px] rounded-lg shadow-lg"
                 />
             </div>
