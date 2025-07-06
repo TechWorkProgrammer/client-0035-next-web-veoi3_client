@@ -7,6 +7,7 @@ import ProjectSection from "@/components/section/ProjectSection";
 import HowItWorksSection from "@/components/section/HowItWorksSection";
 import FeatureSection from "@/components/section/FutureSection";
 import Image from "next/image";
+import DexToolsSection from "@/components/section/DexToolsSection";
 
 const Home: React.FC = () => {
     return (
@@ -15,7 +16,7 @@ const Home: React.FC = () => {
             <main className="flex-grow subpixel-antialiased w-screen">
                 <Banner/>
                 <div className="relative">
-                    <div className="absolute w-full flex justify-center items-center h-full z-10 -top-1/4">
+                    <div className="absolute w-full flex justify-center items-center h-full z-10 top-0">
                         <Image
                             src="/assets/images/bg-key-feature.png"
                             alt="how-it-works-bottom-bg"
@@ -25,6 +26,7 @@ const Home: React.FC = () => {
                             priority
                         />
                     </div>
+                    <DexToolsSection/>
                     <FeatureSection/>
                     <HowItWorksSection/>
                 </div>

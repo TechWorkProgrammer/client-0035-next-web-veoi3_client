@@ -159,9 +159,9 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
             <div>
                 <label htmlFor="durationSeconds" className="block text-sm font-medium text-secondary-400 mb-2">Duration
                     ({form.durationSeconds}s)</label>
-                <input type="range" id="durationSeconds" min="5" max="8" step="1" value={form.durationSeconds}
+                <input type="range" id="durationSeconds" min="1" max="8" step="1" value={form.durationSeconds}
                        onChange={e => setForm({...form, durationSeconds: Number(e.target.value)})}
-                       className="w-full h-2 bg-primary-700 rounded-lg appearance-none cursor-pointer"/>
+                       className="w-full h-2 bg-primary-700 rounded-lg appearance-none cursor-pointer" disabled={true}/>
             </div>
 
             <div className="flex items-center justify-between">
