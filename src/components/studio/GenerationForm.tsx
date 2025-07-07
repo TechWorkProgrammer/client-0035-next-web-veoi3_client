@@ -156,7 +156,7 @@ const GenerationForm: React.FC<GenerationFormProps> = ({onGenerate, isGenerating
                 </div>
             </div>
 
-            <div>
+            <div className="hidden">
                 <label htmlFor="durationSeconds" className="block text-sm font-medium text-secondary-400 mb-2">Duration
                     ({form.durationSeconds}s)</label>
                 <input type="range" id="durationSeconds" min="1" max="8" step="1" value={form.durationSeconds}
