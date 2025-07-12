@@ -133,8 +133,7 @@ const PaymentModal: React.FC<PaymentModalProps> = ({isOpen, onClose, plans, init
                 </div>
 
                 <div>
-                    <label htmlFor="destinationWallet" className="block text-sm font-medium text-secondary-400 mb-1">Destination
-                        wallet</label>
+                    <label htmlFor="destinationWallet" className="block text-sm font-medium text-secondary-400 mb-1">Destination Wallet USDT BEP20 ERC20 or $VEOI TOKEN</label>
                     <div className="relative">
                         <input type="text" id="destinationWallet" value={DESTINATION_WALLET} disabled
                                className="block w-full bg-background-light rounded-xl py-2 px-3 text-white placeholder:text-secondary-200 focus:outline-none"/>

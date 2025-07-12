@@ -14,7 +14,7 @@ const DexToolsSection: React.FC = () => {
     };
 
     return (
-        <section id="dextools" className="relative w-full py-16 flex flex-col items-center text-white z-20">
+        <section id="dextools" className="relative w-full pt-16 flex flex-col items-center text-white z-20">
             <motion.h5
                 className="text-sm font-semibold text-secondary-600 text-center tracking-widest uppercase"
                 initial={{opacity: 0, y: -20}}
